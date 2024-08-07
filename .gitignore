@@ -1,0 +1,6 @@
+# Server 
+
+server/node_modules
+server/dist
+server/access.log
+server/.env

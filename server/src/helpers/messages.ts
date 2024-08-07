@@ -1,0 +1,50 @@
+const messages = {
+  // URL Shortener messages
+  urlFetchSuccessMessage: 'URL fetched successfully!!!',
+  urlFetchErrorMessage: 'URL fetched failed!!!',
+  urlCreateSuccessMessage: 'URL created successfully!!!',
+  urlCreateErrorMessage: 'URL creation failed!!!',
+  urlUpdateSuccessMessage: 'URL updated successfully!!!',
+  urlUpdateErrorMessage: 'URL updation failed!!!',
+  noDataFoundMessage: 'No data found!!!',
+  dataNotFoundMessage: 'Data not found!!!',
+  urlInvalidMessage: 'URL is invalid!!!',
+  urlNotExistsMessage: 'URL not exists!!!',
+  urlAlreadyExistsMessage: 'URL already exists. Try some different URL!!!',
+
+  // Auth messages
+  loginSuccessfulMessage: 'User logged in successfully!!!',
+  loginFailedMessage: 'User log in failed!!!',
+  registerSuccessMessage: 'User signed up successfully!!!',
+  registerFailedMessage: 'User sign up failed!!!',
+  userDetailsUpdateSuccessMessage: "User's details updated successfully!!!",
+  userDetailsUpdateFailedMessage: "User's details updation failed!!!",
+  getUserDetailsSuccessMessage: "User's details fetched successfully!!!",
+  getUserDetailsFailedMessage: "User's details fetching failed!!!",
+  logOutSuccessfulMessage: 'User logged out successfully!!!',
+  logOutFailedMessage: 'User log out failed!!!',
+  missingCredentialsMessage: 'Credentials missing!!!',
+  wrongCredentialsMessage: 'Wrong credentials!!!',
+  userNotRegisteredMessage: 'Number not registered. Sign up with this number.',
+  userExistsMessage: 'User already exists!!!',
+  userNotExistsMessage: 'User not exists!!!',
+  numberExistsMessage: 'Number already exists!!!',
+  cannotUpdatePasswordMessage: 'Cannot update password from here. Use different API !!!',
+  tokenAuthenticatedSuccessMessage: 'Token verfied successfully!!!',
+  tokenAuthenticatedFailedMessage: 'Token verification failed!!!',
+  passwordResetSuccessMessage: 'Password reset successfully!!!',
+  passwordResetFailedMessage: 'Password reset failed!!!',
+  tokenExpiredMessage: 'Token Expired!!!',
+  tokenNotVerifiedMessage: 'Token not verified!!!',
+  tokenMissingMessage: 'Token Missing!!!',
+  tokenNotExistsMessage: 'Token not exists!!!',
+
+  // Common messages
+  successMessage: 'Success!!!',
+  failedMessage: 'Failed!!!',
+  somethingWentWrongMessage: 'Something went wrong! Try after sometime',
+  clientSideErrorMessage: 'Client Side Error! Try after sometime',
+  serverSideErrorMessage: 'Server Side Error! Try after sometime',
+};
+
+export { messages };
