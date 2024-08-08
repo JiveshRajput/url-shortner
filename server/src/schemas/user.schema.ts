@@ -1,22 +1,39 @@
-import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 
 // Defining a structure for the data we want to store in the database
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
+    email: {
+      type: String,
+      required: [true, 'Email required'],
+      unique: [true, 'Email should be unique'],
+    },
+    number: {
+      type: Number,
+    },
     name: {
+      type: String,
+    },
+    age: {
+      type: Number,
+    },
+    isValidated: {
+      type: Boolean,
+      default: false,
+      required: [true, 'isValidated required'],
+    },
+    image: {
       type: String,
     },
     password: {
       type: String,
       required: [true, 'Password required'],
     },
-    email: {
+    role: {
       type: String,
-    },
-    number: {
-      type: Number,
-      required: [true, 'Number required'],
-      unique: [true, 'Number should be unique'],
+      enum: ['ADMIN', 'USER', 'VISITOR'],
+      required: [true, 'Role required'],
+      default: 'USER',
     },
   },
   { timestamps: true },

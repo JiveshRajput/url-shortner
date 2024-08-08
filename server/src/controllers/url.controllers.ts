@@ -1,12 +1,13 @@
+import { RequestHandler } from 'express';
 import { messages, isUrlValid } from '../helpers';
 import { UrlModel } from '../models';
-import { ControllerMiddlewareType, INextFunction, IRequest, IResponse } from '../types';
+import { INextFunction, IRequest, IResponse } from '../types';
 
-export const getUrlController: ControllerMiddlewareType = async (
+export const getUrlController: RequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     const { uniqueId } = request.params;
     const data = await UrlModel.findOne({ shortUrl: uniqueId });
@@ -30,11 +31,11 @@ export const getUrlController: ControllerMiddlewareType = async (
   }
 };
 
-export const createUrlController: ControllerMiddlewareType = async (
+export const createUrlController: RequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     const { fullUrl } = request.body;
 
@@ -58,11 +59,11 @@ export const createUrlController: ControllerMiddlewareType = async (
   }
 };
 
-export const updateUrlController: ControllerMiddlewareType = async (
+export const updateUrlController: RequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     const { uniqueId } = request.params;
     const { fullUrl, shortUrl, clicks } = request.body;

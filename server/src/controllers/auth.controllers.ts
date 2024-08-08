@@ -6,14 +6,13 @@ import {
   CreateResponse,
   hashKey,
 } from '../helpers';
+import { generateOtp } from '../helpers/auth';
+import { sendGmail } from '../helpers/mail';
+import { getGmailTemplate, otpMailTemplate } from '../helpers/templates';
 import { UserModel } from '../models';
-import {
-  ControllerMiddlewareType,
-  INextFunction,
-  IRequest,
-  IResponse,
-  IResponseSuccess,
-} from '../types';
+import OtpModel from '../models/otp.model';
+import { INextFunction, IRequestHandler, IRequest, IResponse, IResponseSuccess } from '../types';
+import { verifySameUserValidator } from '../validators';
 
 // TODO: Create verify OTP, generate OTP APIs
 
@@ -24,38 +23,36 @@ import {
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const registerUserController: ControllerMiddlewareType = async (
+export const registerUserController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     // destructuring data
-    const { number, password, name, email } = request.body;
+    const { password, email } = request.body;
 
     // validating required fields
-    if (!(number && password)) {
+    if (!(email && password)) {
       throw new Error(messages.missingCredentialsMessage);
     }
 
     // checking if user already registered
-    const userExists = await UserModel.findOne({ number });
+    const userExists = await UserModel.findOne({ email });
     if (userExists) {
       throw new Error(messages.userExistsMessage);
     }
 
     // registering a user
     const userData = await UserModel.create({
-      number,
-      name,
-      email,
+      ...request.body,
       password: await hashKey(password),
     });
 
     // Creating JWT Token
     const token: string = createJwt({
       userId: userData._id,
-      number: userData.number,
+      email: userData.email,
     });
 
     // sending success response
@@ -80,14 +77,21 @@ export const registerUserController: ControllerMiddlewareType = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const updateUserController: ControllerMiddlewareType = async (
+export const updateUserController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     // destructuring data
     const { userId } = request.params;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user: middlewareUser } = request;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(middlewareUser, userId);
+
     const body = request.body;
     const { number, password } = body;
 
@@ -135,14 +139,20 @@ export const updateUserController: ControllerMiddlewareType = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const getUserController: ControllerMiddlewareType = async (
+export const getUserController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
     // destructuring data
     const { userId } = request.params;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user: middlewareUser } = request;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(middlewareUser, userId);
 
     // checking if user already registered
     const user = await UserModel.findById(userId);
@@ -171,21 +181,21 @@ export const getUserController: ControllerMiddlewareType = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const loginUserController: ControllerMiddlewareType = async (
+export const loginUserController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
-    const { number, password } = request.body;
+    const { email, password } = request.body;
 
     // Checking are values present
-    if (!(number && password)) {
+    if (!(email && password)) {
       throw new Error(messages.missingCredentialsMessage);
     }
 
     // Checking user
-    const userData = await UserModel.findOne({ number });
+    const userData = await UserModel.findOne({ email });
     if (!userData) {
       throw new Error(messages.userNotRegisteredMessage);
     }
@@ -197,7 +207,7 @@ export const loginUserController: ControllerMiddlewareType = async (
     }
 
     // Creating JWT Token
-    const token = createJwt({ userId: userData._id, number: userData.number });
+    const token = createJwt({ userId: userData._id, email: userData.email });
 
     // Sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
@@ -220,21 +230,28 @@ export const loginUserController: ControllerMiddlewareType = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const resetPasswordController: ControllerMiddlewareType = async (
+export const resetPasswordController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
-    const { number, password } = request.body;
+    const { userId } = request.params;
+    const { password } = request.body;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user: middlewareUser } = request;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(middlewareUser, userId);
 
     // Checking are values present
-    if (!(number && password)) {
+    if (!(userId && password)) {
       throw new Error(messages.missingCredentialsMessage);
     }
 
     // Checking user
-    const userData = await UserModel.findOne({ number });
+    const userData = await UserModel.findById(userId);
     if (!userData) {
       throw new Error(messages.userNotRegisteredMessage);
     }
@@ -260,12 +277,20 @@ export const resetPasswordController: ControllerMiddlewareType = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const authenticateUserController: ControllerMiddlewareType = async (
+export const authenticateUserController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
-) => {
+): Promise<void> => {
   try {
+    const { userId } = request.body;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user: middlewareUser } = request;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(middlewareUser, userId);
+
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.tokenAuthenticatedSuccessMessage,
@@ -276,3 +301,96 @@ export const authenticateUserController: ControllerMiddlewareType = async (
   }
 };
 
+/**
+ * This controller is used to send OTP on registered user's mail.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<void>}: Returns a promise
+ */
+export const sendOtpMailController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user } = request;
+
+    // finding unqiue OTP.
+    let otp = generateOtp();
+    let isOtpExists = await OtpModel.findOne({ otp: otp });
+    while (isOtpExists) {
+      otp = generateOtp();
+      isOtpExists = await OtpModel.findOne({ otp });
+    }
+
+    const result = await OtpModel.create({
+      email: user.email,
+      otp: generateOtp(),
+    });
+
+    // sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.otpSentSuccessMessage,
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.otpSentFailureMessage, 403));
+  }
+};
+
+/**
+ * This controller is used to verify the email for registered user.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<void>}: Returns a promise
+ */
+export const verifyUserController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    // destructuring data otp, email
+    const { otp, userId } = request.body;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user } = request;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(user, userId);
+
+    // Find the most recent OTP for the email
+    const otpResponse = await OtpModel.find({ email: user?.email })
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    // matching the OTP value
+    if (otpResponse.length === 0 || otp !== otpResponse[0].otp) {
+      throw new Error(messages.otpValidFailureMessage);
+    }
+
+    // if otp matched, updating user's detail and saving isValidated to true
+    const userResponse = await UserModel.findById(userId);
+    if (!userResponse) {
+      throw new Error(messages.userNotExistsMessage);
+    }
+    userResponse.isValidated = true;
+
+    await userResponse.save();
+    
+    // Deleting OTP
+    await otpResponse[0].deleteOne();
+
+    // sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.otpValidSuccessMessage,
+      { data: userResponse },
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.registerFailedMessage, 401));
+  }
+};

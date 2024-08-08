@@ -1,49 +1,36 @@
-import type { Express, Request, Response, NextFunction } from 'express';
+import type { Express, Request, Response, NextFunction, RequestHandler } from 'express';
+export type * from './schema';
 
-type IExpress = Express;
-type IRequest = Request;
-type IResponse = Response;
-type INextFunction = NextFunction;
-type PortType = string | number;
-type VoidFunction = () => void;
-type ControllerType = (request: IRequest, response: IResponse) => Promise<void>;
-type ControllerMiddlewareType = (
+export type IExpress = Express;
+export type IRequest = Request;
+export type IRequestHandler = RequestHandler;
+export type IResponse = Response;
+export type INextFunction = NextFunction;
+export type PortType = string | number;
+export type VoidFunction = () => void;
+export type ControllerType = (request: IRequest, response: IResponse) => Promise<void>;
+export type ControllerMiddlewareType = (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
 ) => Promise<void>;
 
-type IError = Error & IResponseError;
+export type IError = Error & IResponseError;
 
-interface IResponseError {
+export interface IResponseError {
   message: string;
   status: string;
   statusCode: number;
 }
 
-interface IResponseSuccess {
+export interface IResponseSuccess {
   message: string;
   status: string;
   statusCode: number;
   data?: object;
 }
 
-enum IStatusType {
+export enum IStatusType {
   OK = 'OK',
   FAIL = 'FAIL',
 }
-
-export {
-  IExpress,
-  IRequest,
-  IResponse,
-  INextFunction,
-  PortType,
-  VoidFunction,
-  ControllerType,
-  ControllerMiddlewareType,
-  IError,
-  IResponseError,
-  IResponseSuccess,
-  IStatusType,
-};

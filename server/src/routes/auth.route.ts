@@ -11,6 +11,8 @@ const {
   getUserController,
   authenticateUserController,
   resetPasswordController,
+  sendOtpMailController,
+  verifyUserController,
 } = authControllers;
 
 // Login User API
@@ -22,8 +24,8 @@ authRoutes.route('/register').post(registerUserController);
 // Authenticate User API
 authRoutes.route('/authenticate').post(verifyTokenMiddleware, authenticateUserController);
 
-// Authenticate User API
-authRoutes.route('/reset-password').post(verifyTokenMiddleware, resetPasswordController);
+// Reset Password of User API
+authRoutes.route('/reset-password/:userId').post(verifyTokenMiddleware, resetPasswordController);
 
 // Get User Detail's API
 // Update User Detail's API
@@ -32,6 +34,10 @@ authRoutes
   .get(verifyTokenMiddleware, getUserController)
   .patch(verifyTokenMiddleware, updateUserController);
 
-// authRoutes.route('/send-otp').post(sendMessage);
+// Send OTP to user's email API
+authRoutes.route('/send-otp').post(verifyTokenMiddleware, sendOtpMailController);
+
+// Verify OTP API
+authRoutes.route('/verify-otp').post(verifyTokenMiddleware, verifyUserController);
 
 export default authRoutes;

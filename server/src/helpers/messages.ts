@@ -38,8 +38,13 @@ const messages = {
   tokenNotVerifiedMessage: 'Token not verified!!!',
   tokenMissingMessage: 'Token Missing!!!',
   tokenNotExistsMessage: 'Token not exists!!!',
+  otpSentSuccessMessage: 'OTP sent successfully!!!',
+  otpSentFailureMessage: 'OTP sent failed!!!',
+  otpValidSuccessMessage: 'OTP validated successfully!!!',
+  otpValidFailureMessage: 'OTP validation failed!!!',
 
   // Common messages
+  accessDeniedMessage: 'Access Denied!!!',
   successMessage: 'Success!!!',
   failedMessage: 'Failed!!!',
   somethingWentWrongMessage: 'Something went wrong! Try after sometime',

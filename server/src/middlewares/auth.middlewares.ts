@@ -43,6 +43,7 @@ export const verifyTokenMiddleware: ControllerMiddlewareType = async (
     if (!userData) {
       throw new Error(messages.tokenNotVerifiedMessage);
     }
+
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     request.user = userData;
 

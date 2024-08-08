@@ -1,5 +1,6 @@
 import jwt, { Jwt, JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import otpGenerator from 'otp-generator';
 import { BCRYPT_SALT, EXPIRES_IN_JWT } from '../configs';
 
 export const hashKey = async (key: string): Promise<string> => {
@@ -28,4 +29,13 @@ export const verifyJwt = (token: string): string | JwtPayload => {
 export const decodeJwt = (token: string): Jwt | null => {
   const decodedToken = jwt.decode(token, { complete: true });
   return decodedToken;
+};
+
+export const generateOtp = (size: number = 4) => {
+  return otpGenerator.generate(size, {
+    digits: true,
+    lowerCaseAlphabets: false,
+    specialChars: false,
+    upperCaseAlphabets: false,
+  });
 };
