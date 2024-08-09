@@ -1,7 +1,9 @@
 import { Schema } from 'mongoose';
+import { IUserRole } from '../types';
+const { ADMIN, USER, VISITOR } = IUserRole;
 
 // Defining a structure for the data we want to store in the database
-const userSchema = new Schema(
+export const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -31,12 +33,10 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['ADMIN', 'USER', 'VISITOR'],
+      enum: [ADMIN, USER, VISITOR],
       required: [true, 'Role required'],
       default: 'USER',
     },
   },
   { timestamps: true },
 );
-
-export default userSchema;

@@ -10,7 +10,7 @@ export const verifySameUserValidator = (
     }>,
   userId: string,
 ) => {
-  if (user._id?.toString() !== userId) {
+  if (user._id?.toString() !== userId && user?.isValidated) {
     throw new Error(messages.accessDeniedMessage);
   }
 };

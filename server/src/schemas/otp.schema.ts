@@ -1,11 +1,10 @@
 import { Schema } from 'mongoose';
-import { getGmailTemplate, otpMailTemplate } from '../helpers/templates';
-import { sendGmail } from '../helpers/mail';
-import { messages } from '../helpers';
+import { messages, sendGmail, getGmailTemplate, otpMailTemplate } from '../helpers';
 import { UserModel } from '../models';
+import { SECONDS } from '../configs';
 
 // Defining a structure for OTP we want to store in the database
-const otpSchema = new Schema({
+export const otpSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -17,7 +16,7 @@ const otpSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 60 * 5, // The document will be automatically deleted after 5 minutes of its creation time
+    expires: 5 * SECONDS, // The document will be automatically deleted after 5 minutes of its creation time
   },
 });
 
@@ -43,5 +42,3 @@ otpSchema.pre('save', async function (next) {
   } catch (error: any) {}
   next();
 });
-
-export default otpSchema;

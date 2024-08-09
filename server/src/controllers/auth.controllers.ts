@@ -1,20 +1,26 @@
 import {
   compareHashKey,
-  createJwt,
   messages,
   CreateError,
   CreateResponse,
   hashKey,
+  generateOtp,
+  generateTokens,
+  verifyRefreshToken,
+  createAccessTokenJwt,
+  decodeJwt,
+  getJwtPayload,
 } from '../helpers';
-import { generateOtp } from '../helpers/auth';
-import { sendGmail } from '../helpers/mail';
-import { getGmailTemplate, otpMailTemplate } from '../helpers/templates';
-import { UserModel } from '../models';
-import OtpModel from '../models/otp.model';
-import { INextFunction, IRequestHandler, IRequest, IResponse, IResponseSuccess } from '../types';
+import { UserModel, OtpModel, RefreshTokenModel } from '../models';
+import {
+  INextFunction,
+  IRequestHandler,
+  IRequest,
+  IResponse,
+  IResponseSuccess,
+  IUser,
+} from '../types';
 import { verifySameUserValidator } from '../validators';
-
-// TODO: Create verify OTP, generate OTP APIs
 
 /**
  * This controller is used to register the user and save in DB.
@@ -49,18 +55,16 @@ export const registerUserController: IRequestHandler = async (
       password: await hashKey(password),
     });
 
-    // Creating JWT Token
-    const token: string = createJwt({
-      userId: userData._id,
-      email: userData.email,
-    });
+    // Creating JWT Tokens
+    const { accessToken, refreshToken } = await generateTokens(userData);
 
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.registerSuccessMessage,
       {
         data: userData,
-        token,
+        accessToken,
+        refreshToken,
       },
       201,
     );
@@ -206,20 +210,117 @@ export const loginUserController: IRequestHandler = async (
       throw new Error(messages.wrongCredentialsMessage);
     }
 
-    // Creating JWT Token
-    const token = createJwt({ userId: userData._id, email: userData.email });
+    // Creating JWT Tokens
+    const { accessToken, refreshToken } = await generateTokens(userData);
 
     // Sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.loginSuccessfulMessage,
       {
         data: userData,
-        token,
+        accessToken,
+        refreshToken,
       },
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
     next(CreateError.clientError(error?.message || messages.loginFailedMessage, 401));
+  }
+};
+
+/**
+ * This controller is used to logout the user.
+ * It returns a token in response.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<IResponse | undefined>}: Returns a promise
+ */
+export const logoutUserController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<IResponse | undefined> => {
+  try {
+    const { refreshToken } = request.body;
+
+    // Checking are values present
+    if (!refreshToken) {
+      throw new Error(messages.missingRefreshToknMessage);
+    }
+
+    // Finding refresh token
+    const userRefreshToken = await RefreshTokenModel.findOne({ token: refreshToken });
+
+    // Creating success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.logoutSuccessfulMessage,
+    );
+
+    // Checking if refresh token exists
+    if (!userRefreshToken) {
+      // Sending success response
+      return response.status(responseMessage.statusCode).json(responseMessage);
+    }
+
+    // Deleting refresh token
+    await userRefreshToken.deleteOne();
+
+    // Sending success response
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.logoutFailedMessage));
+  }
+};
+
+/**
+ * This controller is used to get access token from refresh token.
+ * It returns a token in response.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<void>}: Returns a promise
+ */
+export const getAccessTokenController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { refreshToken } = request.body;
+
+    // Checking are values present
+    if (!refreshToken) {
+      throw new Error(messages.missingRefreshToknMessage);
+    }
+
+    // Verify refresh token
+    const result = await verifyRefreshToken(refreshToken);
+    if (!result) {
+      throw new Error('aniv');
+    }
+
+    const decodedToken = decodeJwt(result as string);
+    if (!decodedToken) {
+      throw new Error(messages.tokenNotVerifiedMessage);
+    }
+
+    // Getting payload from token and verifying it
+    const { payload } = decodedToken;
+    const accessToken = createAccessTokenJwt(getJwtPayload(payload as Partial<IUser>));
+
+    // Creating success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.accessTokenCreatedSuccessMessage,
+      {
+        accessToken,
+      },
+    );
+
+    // Sending success response
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.accessTokenCreatedFailedMessage));
   }
 };
 
@@ -308,7 +409,7 @@ export const authenticateUserController: IRequestHandler = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const sendOtpMailController: IRequestHandler = async (
+export const sendOtpController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
@@ -333,6 +434,7 @@ export const sendOtpMailController: IRequestHandler = async (
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.otpSentSuccessMessage,
+      { data: result },
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
@@ -347,7 +449,7 @@ export const sendOtpMailController: IRequestHandler = async (
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const verifyUserController: IRequestHandler = async (
+export const verifyOtpController: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,
@@ -380,7 +482,7 @@ export const verifyUserController: IRequestHandler = async (
     userResponse.isValidated = true;
 
     await userResponse.save();
-    
+
     // Deleting OTP
     await otpResponse[0].deleteOne();
 

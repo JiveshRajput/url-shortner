@@ -1,4 +1,4 @@
-const messages = {
+export const messages = {
   // URL Shortener messages
   urlFetchSuccessMessage: 'URL fetched successfully!!!',
   urlFetchErrorMessage: 'URL fetched failed!!!',
@@ -15,14 +15,14 @@ const messages = {
   // Auth messages
   loginSuccessfulMessage: 'User logged in successfully!!!',
   loginFailedMessage: 'User log in failed!!!',
+  logoutSuccessfulMessage: 'User logged out successfully!!!',
+  logoutFailedMessage: 'User log out failed!!!',
   registerSuccessMessage: 'User signed up successfully!!!',
   registerFailedMessage: 'User sign up failed!!!',
   userDetailsUpdateSuccessMessage: "User's details updated successfully!!!",
   userDetailsUpdateFailedMessage: "User's details updation failed!!!",
   getUserDetailsSuccessMessage: "User's details fetched successfully!!!",
   getUserDetailsFailedMessage: "User's details fetching failed!!!",
-  logOutSuccessfulMessage: 'User logged out successfully!!!',
-  logOutFailedMessage: 'User log out failed!!!',
   missingCredentialsMessage: 'Credentials missing!!!',
   wrongCredentialsMessage: 'Wrong credentials!!!',
   userNotRegisteredMessage: 'Number not registered. Sign up with this number.',
@@ -30,14 +30,22 @@ const messages = {
   userNotExistsMessage: 'User not exists!!!',
   numberExistsMessage: 'Number already exists!!!',
   cannotUpdatePasswordMessage: 'Cannot update password from here. Use different API !!!',
-  tokenAuthenticatedSuccessMessage: 'Token verfied successfully!!!',
-  tokenAuthenticatedFailedMessage: 'Token verification failed!!!',
   passwordResetSuccessMessage: 'Password reset successfully!!!',
   passwordResetFailedMessage: 'Password reset failed!!!',
+
+  // Token messages
+  missingRefreshToknMessage: 'Refresh token missing!!!',
   tokenExpiredMessage: 'Token Expired!!!',
   tokenNotVerifiedMessage: 'Token not verified!!!',
   tokenMissingMessage: 'Token Missing!!!',
   tokenNotExistsMessage: 'Token not exists!!!',
+  invalidTokenMessage: 'Invalid Token!!!',
+  tokenAuthenticatedSuccessMessage: 'Token verfied successfully!!!',
+  tokenAuthenticatedFailedMessage: 'Token verification failed!!!',
+  accessTokenCreatedSuccessMessage: 'Access token created successfully!!!',
+  accessTokenCreatedFailedMessage: 'Access token creation failed!!!',
+
+  // OTP messages
   otpSentSuccessMessage: 'OTP sent successfully!!!',
   otpSentFailureMessage: 'OTP sent failed!!!',
   otpValidSuccessMessage: 'OTP validated successfully!!!',
@@ -51,5 +59,3 @@ const messages = {
   clientSideErrorMessage: 'Client Side Error! Try after sometime',
   serverSideErrorMessage: 'Server Side Error! Try after sometime',
 };
-
-export { messages };

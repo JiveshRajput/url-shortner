@@ -1,4 +1,5 @@
-import { Document, Model } from 'mongoose';
+import { Document, Model, Schema } from 'mongoose';
+import { IUserRole } from '.';
 
 export interface IUser extends Document {
   createdAt: NativeDate;
@@ -10,6 +11,7 @@ export interface IUser extends Document {
   age?: number | undefined;
   isValidated?: boolean | undefined;
   image?: string | undefined;
+  role: IUserRole;
 }
 
 export interface IUserModel extends Model<IUser> {}
@@ -21,3 +23,11 @@ export interface IOtp extends Document {
 }
 
 export interface IOtpModel extends Model<IOtp> {}
+
+export interface IRefreshToken extends Document {
+  createdAt: NativeDate;
+  token: string;
+  userId: Schema.Types.ObjectId;
+}
+
+export interface IRefreshTokenModel extends Model<IRefreshToken> {}

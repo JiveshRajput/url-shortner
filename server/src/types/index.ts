@@ -34,3 +34,9 @@ export enum IStatusType {
   OK = 'OK',
   FAIL = 'FAIL',
 }
+
+export enum IUserRole {
+  VISITOR = 'VISITOR',
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}

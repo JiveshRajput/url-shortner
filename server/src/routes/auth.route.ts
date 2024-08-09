@@ -5,39 +5,46 @@ import { authMiddlewares } from '../middlewares';
 const authRoutes = Router();
 const { verifyTokenMiddleware } = authMiddlewares;
 const {
-  loginUserController,
   registerUserController,
-  updateUserController,
+  sendOtpController,
+  verifyOtpController,
+  loginUserController,
+  logoutUserController,
   getUserController,
-  authenticateUserController,
+  updateUserController,
   resetPasswordController,
-  sendOtpMailController,
-  verifyUserController,
+  authenticateUserController,
 } = authControllers;
 
-// Login User API
-authRoutes.route('/login').get(loginUserController);
-
-// Register User API
+// Post: Register User API
 authRoutes.route('/register').post(registerUserController);
 
-// Authenticate User API
-authRoutes.route('/authenticate').post(verifyTokenMiddleware, authenticateUserController);
+// Post: Send OTP to user's email API
+authRoutes.route('/send-otp').post(verifyTokenMiddleware, sendOtpController);
 
-// Reset Password of User API
-authRoutes.route('/reset-password/:userId').post(verifyTokenMiddleware, resetPasswordController);
+// Post: Verify OTP API
+authRoutes.route('/verify-otp').post(verifyTokenMiddleware, verifyOtpController);
 
-// Get User Detail's API
-// Update User Detail's API
+// Post: Login User API
+authRoutes.route('/login').post(loginUserController);
+
+// Post: Logout User API
+authRoutes.route('/logout').post(verifyTokenMiddleware, logoutUserController);
+
+// Get: Get Access Token API
+authRoutes.route('/get-access-token').get(logoutUserController);
+
+// Get: Get User Detail's API
+// Patch: Update User Detail's API
 authRoutes
   .route('/:userId')
   .get(verifyTokenMiddleware, getUserController)
   .patch(verifyTokenMiddleware, updateUserController);
 
-// Send OTP to user's email API
-authRoutes.route('/send-otp').post(verifyTokenMiddleware, sendOtpMailController);
+// Post: Reset Password of User API
+authRoutes.route('/reset-password/:userId').post(verifyTokenMiddleware, resetPasswordController);
 
-// Verify OTP API
-authRoutes.route('/verify-otp').post(verifyTokenMiddleware, verifyUserController);
+// Post: Authenticate User API
+authRoutes.route('/authenticate').post(verifyTokenMiddleware, authenticateUserController);
 
 export default authRoutes;

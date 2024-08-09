@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 import shortId from 'shortid';
 
 // Defining a structure for the data we want to store in the database
-const urlSchema = new mongoose.Schema(
+export const urlSchema = new Schema(
   {
     fullUrl: {
       type: String,
@@ -22,5 +22,3 @@ const urlSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-
-export default urlSchema;

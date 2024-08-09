@@ -1,7 +1,10 @@
-import mongoose from 'mongoose';
-import { getMongoDBUrl } from '../helpers';
+import { connect } from 'mongoose';
 
-const mongoDbSetup = () => {
+export const mongoDbSetup = () => {
+  const getMongoDBUrl = (url: string, username: string, password: string) => {
+    return url?.replace('{username}', username)?.replace('{password}', password);
+  };
+
   const connectToDB = async () => {
     const mongoDbUri = getMongoDBUrl(
       process.env.MONGODB_URI as string,
@@ -9,11 +12,9 @@ const mongoDbSetup = () => {
       process.env.MONGODB_PASSWORD as string,
     );
 
-    await mongoose.connect(mongoDbUri);
+    await connect(mongoDbUri);
     console.log('MongoDB status: CONNECTED');
   };
 
   return { connectToDB };
 };
-
-export default mongoDbSetup;

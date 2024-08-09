@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import fs from 'fs';
 import path from 'path';
 
-import mongoDbSetup from './mongo-db-setup';
+import { mongoDbSetup } from './mongo-db-setup';
 import {
   IError,
   IExpress,
@@ -17,7 +17,7 @@ import {
 } from '../types';
 import { PORT as BACKUP_PORT } from '.';
 
-const initialAppSetup = () => {
+export const initialAppSetup = () => {
   const app: IExpress = express();
 
   // Middleware for handling environment
@@ -63,5 +63,3 @@ const initialAppSetup = () => {
 
   return { app, startApp, globalErrorHandlingMiddleware };
 };
-
-export default initialAppSetup;
