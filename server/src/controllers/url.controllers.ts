@@ -106,3 +106,29 @@ export const updateUrlController: RequestHandler = async (
     });
   }
 };
+
+export const deleteUrlController: RequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { uniqueId } = request.params;
+
+    const data = await UrlModel.findOne({ shortUrl: uniqueId });
+    if (!data) {
+      throw new Error(messages.urlNotExistsMessage);
+    }
+
+    await data.deleteOne();
+
+    response.status(200).json({
+      message: messages.urlDeleteSuccessMessage,
+    });
+  } catch (error: any) {
+    next({
+      statusCode: 400,
+      message: error?.message || messages.urlDeleteErrorMessage,
+    });
+  }
+};

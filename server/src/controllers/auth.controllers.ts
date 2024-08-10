@@ -12,7 +12,7 @@ import {
   getJwtPayload,
 } from '../helpers';
 import { UserModel, OtpModel, RefreshTokenModel } from '../models';
-import { verifySameUserValidator } from '../validators';
+import { sameUserValidator } from '../validators';
 import {
   INextFunction,
   IRequestHandler,
@@ -90,11 +90,8 @@ export const updateUserController: IRequestHandler = async (
     // destructuring data
     const { userId } = request.params;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user: middlewareUser } = request;
-
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId, next);
+    const middlewareUser = sameUserValidator(request, userId, next);
 
     const body = request.body;
     const { number, password } = body;
@@ -152,11 +149,8 @@ export const getUserController: IRequestHandler = async (
     // destructuring data
     const { userId } = request.params;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user: middlewareUser } = request;
-
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId, next);
+    const middlewareUser = sameUserValidator(request, userId, next);
 
     // checking if user already registered
     const user = await UserModel.findById(userId);
@@ -335,14 +329,14 @@ export const resetPasswordController: IRequestHandler = async (
     const { userId } = request.params;
     const { password, oldPassword } = request.body;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user: middlewareUser } = request;
-
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId, next);
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
 
     // Checking old password is same or not
-    const isOldPasswordCorrect = await compareHashKey(oldPassword, middlewareUser?.password);
+    const isOldPasswordCorrect = await compareHashKey(oldPassword, user?.password);
     if (!isOldPasswordCorrect) {
       throw new Error(messages.oldPasswordWrongMessage);
     }
@@ -388,11 +382,11 @@ export const resetPasswordByOtpController: IRequestHandler = async (
     const { userId } = request.params;
     const { password, otp } = request.body;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user: middlewareUser } = request as IRequest & IUser;
-
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId, next);
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
 
     // Checking are values present
     if (!(otp && password)) {
@@ -400,7 +394,7 @@ export const resetPasswordByOtpController: IRequestHandler = async (
     }
 
     // Find the most recent OTP for the email
-    const otpResponse = await OtpModel.find({ email: middlewareUser?.email })
+    const otpResponse = await OtpModel.find({ email: user?.email })
       .sort({ createdAt: -1 })
       .limit(1);
 
@@ -408,6 +402,9 @@ export const resetPasswordByOtpController: IRequestHandler = async (
     if (otpResponse.length === 0 || otp !== otpResponse[0].otp) {
       throw new Error(messages.otpValidFailureMessage);
     }
+
+    // Deleting OTP
+    otpResponse[0].deleteOne();
 
     // Checking user
     const userData = await UserModel.findById(userId);
@@ -444,11 +441,8 @@ export const authenticateUserController: IRequestHandler = async (
   try {
     const { userId } = request.body;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user: middlewareUser } = request;
-
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId, next);
+    const user = sameUserValidator(request, userId, next);
 
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
@@ -515,16 +509,13 @@ export const verifyOtpController: IRequestHandler = async (
     // destructuring data otp, email
     const { otp, userId } = request.body;
 
-    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
-    const { user } = request;
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
 
     // Check if user already verified or not
     if (user?.isValidated) {
       throw new Error(messages.alreadyVerifiedMessage);
     }
-
-    // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(user, userId, next);
 
     // Find the most recent OTP for the email
     const otpResponse = await OtpModel.find({ email: user?.email })

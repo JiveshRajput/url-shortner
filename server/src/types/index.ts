@@ -1,5 +1,4 @@
 import type { Express, Request, Response, NextFunction, RequestHandler } from 'express';
-import { IUser } from './schema';
 export type * from './schema';
 
 export type IExpress = Express;
