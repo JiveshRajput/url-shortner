@@ -1,7 +1,8 @@
 import { RequestHandler } from 'express';
-import { messages, isUrlValid } from '../helpers';
+import { messages } from '../helpers';
 import { UrlModel } from '../models';
 import { INextFunction, IRequest, IResponse } from '../types';
+import { isUrlValid } from '../validators';
 
 export const getUrlController: RequestHandler = async (
   request: IRequest,
