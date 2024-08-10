@@ -1,3 +1,4 @@
+import { JwtPayload } from 'jsonwebtoken';
 import {
   compareHashKey,
   messages,
@@ -8,10 +9,10 @@ import {
   generateTokens,
   verifyRefreshToken,
   createAccessTokenJwt,
-  decodeJwt,
   getJwtPayload,
 } from '../helpers';
 import { UserModel, OtpModel, RefreshTokenModel } from '../models';
+import { verifySameUserValidator } from '../validators';
 import {
   INextFunction,
   IRequestHandler,
@@ -20,7 +21,6 @@ import {
   IResponseSuccess,
   IUser,
 } from '../types';
-import { verifySameUserValidator } from '../validators';
 
 /**
  * This controller is used to register the user and save in DB.
@@ -94,7 +94,7 @@ export const updateUserController: IRequestHandler = async (
     const { user: middlewareUser } = request;
 
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId);
+    verifySameUserValidator(middlewareUser, userId, next);
 
     const body = request.body;
     const { number, password } = body;
@@ -156,7 +156,7 @@ export const getUserController: IRequestHandler = async (
     const { user: middlewareUser } = request;
 
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId);
+    verifySameUserValidator(middlewareUser, userId, next);
 
     // checking if user already registered
     const user = await UserModel.findById(userId);
@@ -224,7 +224,7 @@ export const loginUserController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.loginFailedMessage, 401));
+    next(CreateError.clientError(error?.message || messages.loginFailedMessage));
   }
 };
 
@@ -269,7 +269,7 @@ export const logoutUserController: IRequestHandler = async (
     // Sending success response
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.logoutFailedMessage));
+    next(CreateError.clientError(error?.message || messages.logoutFailedMessage, 401));
   }
 };
 
@@ -297,16 +297,12 @@ export const getAccessTokenController: IRequestHandler = async (
     // Verify refresh token
     const result = await verifyRefreshToken(refreshToken);
     if (!result) {
-      throw new Error('aniv');
-    }
-
-    const decodedToken = decodeJwt(result as string);
-    if (!decodedToken) {
       throw new Error(messages.tokenNotVerifiedMessage);
     }
+    const { userId, email } = result as JwtPayload;
+    const payload = { _id: userId, email };
 
-    // Getting payload from token and verifying it
-    const { payload } = decodedToken;
+    // Creating access token
     const accessToken = createAccessTokenJwt(getJwtPayload(payload as Partial<IUser>));
 
     // Creating success response
@@ -320,7 +316,7 @@ export const getAccessTokenController: IRequestHandler = async (
     // Sending success response
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.accessTokenCreatedFailedMessage));
+    next(CreateError.clientError(error?.message || messages.accessTokenCreatedFailedMessage, 401));
   }
 };
 
@@ -344,7 +340,7 @@ export const resetPasswordController: IRequestHandler = async (
     const { user: middlewareUser } = request;
 
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId);
+    verifySameUserValidator(middlewareUser, userId, next);
 
     // Checking are values present
     if (!(userId && password)) {
@@ -367,7 +363,7 @@ export const resetPasswordController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.passwordResetFailedMessage, 401));
+    next(CreateError.clientError(error?.message || messages.passwordResetFailedMessage));
   }
 };
 
@@ -390,7 +386,7 @@ export const authenticateUserController: IRequestHandler = async (
     const { user: middlewareUser } = request;
 
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(middlewareUser, userId);
+    verifySameUserValidator(middlewareUser, userId, next);
 
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
@@ -398,7 +394,7 @@ export const authenticateUserController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.tokenAuthenticatedFailedMessage, 403));
+    next(CreateError.clientError(error?.message || messages.tokenAuthenticatedFailedMessage, 401));
   }
 };
 
@@ -418,6 +414,8 @@ export const sendOtpController: IRequestHandler = async (
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     const { user } = request;
 
+    // TODO: Check if user already verified or not
+
     // finding unqiue OTP.
     let otp = generateOtp();
     let isOtpExists = await OtpModel.findOne({ otp: otp });
@@ -428,7 +426,7 @@ export const sendOtpController: IRequestHandler = async (
 
     const result = await OtpModel.create({
       email: user.email,
-      otp: generateOtp(),
+      otp,
     });
 
     // sending success response
@@ -438,7 +436,7 @@ export const sendOtpController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.otpSentFailureMessage, 403));
+    next(CreateError.clientError(error?.message || messages.otpSentFailureMessage));
   }
 };
 
@@ -462,7 +460,7 @@ export const verifyOtpController: IRequestHandler = async (
     const { user } = request;
 
     // checking if jwt userId and current userId is same or not
-    verifySameUserValidator(user, userId);
+    verifySameUserValidator(user, userId, next);
 
     // Find the most recent OTP for the email
     const otpResponse = await OtpModel.find({ email: user?.email })
@@ -493,6 +491,6 @@ export const verifyOtpController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.registerFailedMessage, 401));
+    next(CreateError.clientError(error?.message || messages.otpValidFailureMessage, 401));
   }
 };

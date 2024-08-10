@@ -37,7 +37,7 @@ export const verifyTokenMiddleware: ControllerMiddlewareType = async (
 
     // Getting payload from token and verifying it
     const { payload } = decodedToken;
-    const { userId } = payload as JwtPayload & { userId: string; number: number };
+    const { userId } = payload as JwtPayload;
     const userData = await UserModel.findById(userId);
 
     if (!userData) {
@@ -50,6 +50,6 @@ export const verifyTokenMiddleware: ControllerMiddlewareType = async (
     // Go to next
     next();
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.tokenMissingMessage, 403));
+    next(CreateError.clientError(error?.message || messages.tokenNotVerifiedMessage, 401));
   }
 };

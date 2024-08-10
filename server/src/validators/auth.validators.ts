@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import { IUser } from '../types';
-import { messages } from '../helpers';
+import { INextFunction, IUser } from '../types';
+import { CreateError, messages } from '../helpers';
 
 export const verifySameUserValidator = (
   user: Document<unknown, {}, IUser> &
@@ -9,8 +9,13 @@ export const verifySameUserValidator = (
       _id: unknown;
     }>,
   userId: string,
+  next: INextFunction,
 ) => {
-  if (user._id?.toString() !== userId && user?.isValidated) {
-    throw new Error(messages.accessDeniedMessage);
+  try {
+    if (user._id?.toString() !== userId && user?.isValidated) {
+      throw new Error(messages.accessDeniedMessage);
+    }
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.accessDeniedMessage));
   }
 };

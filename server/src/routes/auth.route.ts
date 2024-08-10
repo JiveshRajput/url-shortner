@@ -10,6 +10,7 @@ const {
   verifyOtpController,
   loginUserController,
   logoutUserController,
+  getAccessTokenController,
   getUserController,
   updateUserController,
   resetPasswordController,
@@ -32,7 +33,7 @@ authRoutes.route('/login').post(loginUserController);
 authRoutes.route('/logout').post(verifyTokenMiddleware, logoutUserController);
 
 // Get: Get Access Token API
-authRoutes.route('/get-access-token').get(logoutUserController);
+authRoutes.route('/get-access-token').get(getAccessTokenController);
 
 // Get: Get User Detail's API
 // Patch: Update User Detail's API
