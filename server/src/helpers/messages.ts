@@ -25,7 +25,7 @@ export const messages = {
   getUserDetailsFailedMessage: "User's details fetching failed!!!",
   missingCredentialsMessage: 'Credentials missing!!!',
   wrongCredentialsMessage: 'Wrong credentials!!!',
-  userNotRegisteredMessage: 'Number not registered. Sign up with this number.',
+  userNotRegisteredMessage: 'User not registered!!!',
   oldPasswordWrongMessage: 'Old password mismatched!!!',
   userExistsMessage: 'User already exists!!!',
   userNotExistsMessage: 'User not exists!!!',

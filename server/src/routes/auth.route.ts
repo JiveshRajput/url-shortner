@@ -15,6 +15,7 @@ const {
   updateUserController,
   resetPasswordController,
   authenticateUserController,
+  resetPasswordByOtpController,
 } = authControllers;
 
 // Post: Register User API
@@ -44,6 +45,11 @@ authRoutes
 
 // Post: Reset Password of User API
 authRoutes.route('/reset-password/:userId').post(verifyTokenMiddleware, resetPasswordController);
+
+// Post: Reset Password of User via OTP API
+authRoutes
+  .route('/reset-password-by-otp/:userId')
+  .post(verifyTokenMiddleware, resetPasswordByOtpController);
 
 // Post: Authenticate User API
 authRoutes.route('/authenticate').post(verifyTokenMiddleware, authenticateUserController);

@@ -12,10 +12,10 @@ export const verifySameUserValidator = (
   next: INextFunction,
 ) => {
   try {
-    if (user._id?.toString() !== userId && user?.isValidated) {
+    if (user._id?.toString() !== userId && !user?.isValidated) {
       throw new Error(messages.accessDeniedMessage);
     }
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.accessDeniedMessage));
+    next(CreateError.clientError(error?.message || messages.accessDeniedMessage, 401));
   }
 };

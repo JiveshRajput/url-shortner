@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { messages, sendGmail, getGmailTemplate, otpMailTemplate } from '../helpers';
 import { UserModel } from '../models';
-import { SECONDS } from '../configs';
+import { OTP_EXPIRY_MINUTES, SECONDS } from '../configs';
 
 // Defining a structure for OTP we want to store in the database
 export const otpSchema = new Schema({
@@ -13,10 +13,15 @@ export const otpSchema = new Schema({
     type: String,
     required: true,
   },
+  isUsed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 5 * SECONDS, // The document will be automatically deleted after 5 minutes of its creation time
+    expires: OTP_EXPIRY_MINUTES * SECONDS, // The document will be automatically deleted after given minutes of its creation time
   },
 });
 

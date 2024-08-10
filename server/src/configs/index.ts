@@ -8,6 +8,7 @@ export const EXPIRES_IN_JWT: string = '1h';
 export const EXPIRES_IN_ACCESS_TOKEN: string = '10m';
 export const EXPIRES_IN_REFRESH_TOKEN: string = '30d';
 export const PROJEC_NAME: string = 'URL Shortner';
+export const OTP_EXPIRY_MINUTES: number = 5;
 export const SECONDS: number = 60;
 export const MINUTES: number = 60;
 export const HOURS: number = 24;

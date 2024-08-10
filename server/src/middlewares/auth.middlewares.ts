@@ -1,6 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { CreateError, decodeJwt, messages, verifyJwt } from '../helpers';
-import { ControllerMiddlewareType, INextFunction, IRequest, IResponse } from '../types';
+import { INextFunction, IRequest, IRequestHandler, IResponse } from '../types';
 import { UserModel } from '../models';
 
 /**
@@ -10,7 +10,7 @@ import { UserModel } from '../models';
  * @param {INextFunction} next: Callback argument to the middleware function
  * @returns {Promise<void>}: Returns a promise
  */
-export const verifyTokenMiddleware: ControllerMiddlewareType = async (
+export const verifyTokenMiddleware: IRequestHandler = async (
   request: IRequest,
   response: IResponse,
   next: INextFunction,

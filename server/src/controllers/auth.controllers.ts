@@ -230,7 +230,6 @@ export const loginUserController: IRequestHandler = async (
 
 /**
  * This controller is used to logout the user.
- * It returns a token in response.
  * @param {IRequest} request: HTTP Request object
  * @param {IResponse} response: HTTP Response object
  * @param {INextFunction} next: Callback argument to the middleware function
@@ -374,6 +373,63 @@ export const resetPasswordController: IRequestHandler = async (
 };
 
 /**
+ * This controller is used to reset the password of user via OTP.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<void>}: Returns a promise
+ */
+export const resetPasswordByOtpController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { userId } = request.params;
+    const { password, otp } = request.body;
+
+    // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
+    const { user: middlewareUser } = request as IRequest & IUser;
+
+    // checking if jwt userId and current userId is same or not
+    verifySameUserValidator(middlewareUser, userId, next);
+
+    // Checking are values present
+    if (!(otp && password)) {
+      throw new Error(messages.missingCredentialsMessage);
+    }
+
+    // Find the most recent OTP for the email
+    const otpResponse = await OtpModel.find({ email: middlewareUser?.email })
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    // matching the OTP value
+    if (otpResponse.length === 0 || otp !== otpResponse[0].otp) {
+      throw new Error(messages.otpValidFailureMessage);
+    }
+
+    // Checking user
+    const userData = await UserModel.findById(userId);
+    if (!userData) {
+      throw new Error(messages.userNotExistsMessage);
+    }
+
+    // Hashing the password and saving it
+    userData.password = await hashKey(password);
+    await userData.save();
+
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.passwordResetSuccessMessage,
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.passwordResetFailedMessage));
+  }
+};
+
+/**
  * This controller is used to authenticate the user.
  * @param {IRequest} request: HTTP Request object
  * @param {IResponse} response: HTTP Response object
@@ -420,20 +476,15 @@ export const sendOtpController: IRequestHandler = async (
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     const { user } = request;
 
-    // Check if user already verified or not
-    if (user?.isValidated) {
-      throw new Error(messages.alreadyVerifiedMessage);
-    }
-
     // finding unqiue OTP.
     let otp = generateOtp();
-    let isOtpExists = await OtpModel.findOne({ otp: otp });
+    let isOtpExists = await OtpModel.findOne({ otp });
     while (isOtpExists) {
       otp = generateOtp();
       isOtpExists = await OtpModel.findOne({ otp });
     }
 
-    const result = await OtpModel.create({
+    await OtpModel.create({
       email: user.email,
       otp,
     });
