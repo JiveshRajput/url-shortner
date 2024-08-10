@@ -26,6 +26,7 @@ export const messages = {
   missingCredentialsMessage: 'Credentials missing!!!',
   wrongCredentialsMessage: 'Wrong credentials!!!',
   userNotRegisteredMessage: 'Number not registered. Sign up with this number.',
+  oldPasswordWrongMessage: 'Old password mismatched!!!',
   userExistsMessage: 'User already exists!!!',
   userNotExistsMessage: 'User not exists!!!',
   numberExistsMessage: 'Number already exists!!!',
@@ -52,6 +53,7 @@ export const messages = {
   otpValidFailureMessage: 'OTP validation failed!!!',
 
   // Common messages
+  alreadyVerifiedMessage: 'Already Verified!!!',
   accessDeniedMessage: 'Access Denied!!!',
   successMessage: 'Success!!!',
   failedMessage: 'Failed!!!',

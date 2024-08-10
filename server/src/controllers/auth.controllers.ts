@@ -309,7 +309,7 @@ export const getAccessTokenController: IRequestHandler = async (
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.accessTokenCreatedSuccessMessage,
       {
-        accessToken,
+        data: { accessToken },
       },
     );
 
@@ -334,13 +334,19 @@ export const resetPasswordController: IRequestHandler = async (
 ): Promise<void> => {
   try {
     const { userId } = request.params;
-    const { password } = request.body;
+    const { password, oldPassword } = request.body;
 
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     const { user: middlewareUser } = request;
 
     // checking if jwt userId and current userId is same or not
     verifySameUserValidator(middlewareUser, userId, next);
+
+    // Checking old password is same or not
+    const isOldPasswordCorrect = await compareHashKey(oldPassword, middlewareUser?.password);
+    if (!isOldPasswordCorrect) {
+      throw new Error(messages.oldPasswordWrongMessage);
+    }
 
     // Checking are values present
     if (!(userId && password)) {
@@ -414,7 +420,10 @@ export const sendOtpController: IRequestHandler = async (
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     const { user } = request;
 
-    // TODO: Check if user already verified or not
+    // Check if user already verified or not
+    if (user?.isValidated) {
+      throw new Error(messages.alreadyVerifiedMessage);
+    }
 
     // finding unqiue OTP.
     let otp = generateOtp();
@@ -432,7 +441,6 @@ export const sendOtpController: IRequestHandler = async (
     // sending success response
     const responseMessage: IResponseSuccess = CreateResponse.success(
       messages.otpSentSuccessMessage,
-      { data: result },
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
@@ -458,6 +466,11 @@ export const verifyOtpController: IRequestHandler = async (
 
     // @ts-expect-error Property 'user' does not exist on type 'IRequest'.
     const { user } = request;
+
+    // Check if user already verified or not
+    if (user?.isValidated) {
+      throw new Error(messages.alreadyVerifiedMessage);
+    }
 
     // checking if jwt userId and current userId is same or not
     verifySameUserValidator(user, userId, next);
@@ -491,6 +504,6 @@ export const verifyOtpController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.otpValidFailureMessage, 401));
+    next(CreateError.clientError(error?.message || messages.otpValidFailureMessage));
   }
 };
