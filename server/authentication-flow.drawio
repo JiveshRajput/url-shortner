@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.6">
   <diagram name="Page-1" id="foATsIJrTRIfaARtOHlN">
-    <mxGraphModel dx="531" dy="1361" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="901" dy="1542" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -98,7 +98,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-10" value="Send OTP to registered email" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="258" y="559" width="120" height="60" as="geometry" />
+          <mxGeometry x="270" y="537" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="GXnU_N1Of4qAsDQUTyIa-14" target="GXnU_N1Of4qAsDQUTyIa-8">
           <mxGeometry relative="1" as="geometry" />
@@ -107,10 +107,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-14" value="If OTP&amp;nbsp;&lt;div&gt;verified&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="441" y="549" width="80" height="80" as="geometry" />
+          <mxGeometry x="441" y="527" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-19" value="Failed to update&amp;nbsp;&lt;div&gt;password&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="540" y="680" width="150" height="70" as="geometry" />
+          <mxGeometry x="541" y="618" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-21" value="Token Schema" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="500" y="840" width="209" height="170" as="geometry">
