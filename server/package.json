@@ -4,19 +4,15 @@
   "main": "src/app.js",
   "license": "MIT",
   "dependencies": {
-    "@types/twilio": "^3.19.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "fast-two-sms": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
     "nodemailer": "^6.9.14",
     "otp-generator": "^4.0.1",
     "shortid": "^2.2.16",
-    "textlink-sms": "^0.0.3",
-    "twilio": "^5.2.2",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
