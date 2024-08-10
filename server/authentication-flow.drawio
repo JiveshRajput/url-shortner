@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.6">
   <diagram name="Page-1" id="foATsIJrTRIfaARtOHlN">
-    <mxGraphModel dx="1036" dy="1608" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="531" dy="1361" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -111,6 +111,14 @@
         </mxCell>
         <mxCell id="GXnU_N1Of4qAsDQUTyIa-19" value="Failed to update&amp;nbsp;&lt;div&gt;password&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="540" y="680" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="GXnU_N1Of4qAsDQUTyIa-21" value="Token Schema" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="840" width="209" height="170" as="geometry">
+            <mxRectangle x="40" y="360" width="110" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GXnU_N1Of4qAsDQUTyIa-22" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;b&gt;_id&lt;/b&gt;:&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;ObjectId; required;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;token&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;:&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;string; required;&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="GXnU_N1Of4qAsDQUTyIa-21">
+          <mxGeometry x="10" y="30" width="190" height="50" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
