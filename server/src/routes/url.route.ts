@@ -11,7 +11,7 @@ urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
 
 urlRoutes
   .route('/:uniqueId')
-  .get(verifyTokenMiddleware, getUrlController)
+  .get(getUrlController)
   .patch(verifyTokenMiddleware, updateUrlController)
   .delete(verifyTokenMiddleware, deleteUrlController);
 
