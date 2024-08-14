@@ -15,26 +15,20 @@ export const AuthLayout = (props: IAuthLayout) => {
   } = props;
 
   return (
-    <div className="flex min-h-screen justify-center bg-gray-100 text-gray-900">
-      <div className="m-0 flex flex-1 justify-center bg-white shadow">
-        <div className="flex flex-col items-center justify-center p-6 sm:p-10 lg:w-1/2 xl:w-5/12">
+    <div className="flex min-h-screen bg-gray-100 text-gray-900 max-lg:justify-center">
+      <div className="m-0 flex flex-1 bg-white shadow lg:justify-center">
+        <div className="flex w-full flex-col items-center justify-center p-4 sm:p-10 md:w-1/2 xl:w-5/12">
           <div>
             {/* TODO: Add logo there */}
-            <p className="text-center">URL Shortener</p>
+            <p className="text-center">Quick URL</p>
           </div>
           <div className="mt-4 flex flex-col items-center">
             <h1 className="text-center text-2xl font-extrabold xl:text-3xl">{title}</h1>
             <div className="mt-8 w-full flex-1">{children}</div>
           </div>
         </div>
-        <div className="hidden w-full flex-1 justify-center bg-sky-50 p-12 text-center lg:flex xl:p-16">
-          <Image
-            alt={title}
-            src={imageSrc}
-            width={600}
-            height={800}
-            className="h-full bg-contain bg-center bg-no-repeat"
-          />
+        <div className="hidden w-full flex-1 justify-center bg-sky-50 p-12 text-center md:flex xl:p-16">
+          <Image alt={title} src={imageSrc} width={600} height={800} className="h-full" />
         </div>
       </div>
     </div>

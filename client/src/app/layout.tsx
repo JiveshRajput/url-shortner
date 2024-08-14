@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'URL Shortener',
-  description: 'URL Shortener | Save important links by your specific URL',
+  title: 'QuickURL | URL Shortener',
+  description: 'QuickURL | URL Shortener | Save important links by your specific URL',
 };
 
 export default function RootLayout({

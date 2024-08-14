@@ -1,11 +1,11 @@
-import React from 'react';
 import Link from 'next/link';
 import { AuthLayout } from '../components';
+import { signInAction } from '../server-actions';
 
 export const SignInScreen = () => {
   return (
     <AuthLayout title="Sign in">
-      <div className="mt-8 w-full flex-1">
+      <div>
         <div className="flex flex-col items-center">
           <button className="flex w-full max-w-xs items-center justify-center rounded-lg bg-sky-100 py-3 font-bold shadow-sm transition-all duration-300 ease-in-out hover:bg-sky-200 hover:shadow focus:bg-sky-200 focus:shadow-sm focus:outline-none">
             <div className="rounded-full bg-white p-2">
@@ -39,16 +39,20 @@ export const SignInScreen = () => {
         </div>
 
         <div className="mx-auto max-w-xs">
-          <form>
+          <form action={signInAction}>
             <input
               className="w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
               type="email"
+              name="email"
               placeholder="Email"
+              required
             />
             <input
               className="mt-4 w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
               type="password"
+              name="password"
               placeholder="Password"
+              required
             />
             <button className="focus:shadow-outline mt-4 flex w-full items-center justify-center rounded-lg bg-sky-500 py-3 font-semibold tracking-wide text-white transition-all duration-300 ease-in-out hover:bg-sky-600 focus:bg-sky-600 focus:outline-none">
               Sign In
