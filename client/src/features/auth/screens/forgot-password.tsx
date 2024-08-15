@@ -1,10 +1,11 @@
 import React from 'react';
 import { AuthLayout } from '../components';
 import { forgotPasswordAction } from '../server-actions';
+import { IMAGES } from '@/assets';
 
 export const ForgotPasswordScreen = () => {
   return (
-    <AuthLayout title="Send OTP to email">
+    <AuthLayout title="Send OTP to email" imageSrc={IMAGES.SVG.AUTH_FORGOT_PASSWORD}>
       <div className="mx-auto max-w-xs">
         <form action={forgotPasswordAction}>
           <input

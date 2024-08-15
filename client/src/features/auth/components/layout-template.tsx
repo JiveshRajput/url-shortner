@@ -1,3 +1,4 @@
+import { IMAGES } from '@/assets';
 import Image from 'next/image';
 import React, { ReactNode } from 'react';
 
@@ -8,11 +9,7 @@ export interface IAuthLayout {
 }
 
 export const AuthLayout = (props: IAuthLayout) => {
-  const {
-    title = '',
-    imageSrc = 'https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg',
-    children,
-  } = props;
+  const { title = '', imageSrc = IMAGES.SVG.AUTH_SIGN_UP, children } = props;
 
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-900 max-lg:justify-center">

@@ -1,10 +1,11 @@
 import React from 'react';
 import { AuthLayout } from '../components';
 import { resetPasswordAction } from '../server-actions';
+import { IMAGES } from '@/assets';
 
 export const ResetPasswordScreen = () => {
   return (
-    <AuthLayout title="Reset Password">
+    <AuthLayout title="Reset Password" imageSrc={IMAGES.SVG.AUTH_RESET_PASSWORD}>
       <div className="mx-auto max-w-xs">
         <form action={resetPasswordAction}>
           <input

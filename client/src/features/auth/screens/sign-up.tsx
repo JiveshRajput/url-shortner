@@ -2,10 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { AuthLayout } from '../components';
 import { signUpAction } from '../server-actions';
+import { IMAGES } from '@/assets';
 
 export const SignUpScreen = () => {
   return (
-    <AuthLayout title="Sign up">
+    <AuthLayout title="Sign up" imageSrc={IMAGES.SVG.AUTH_SIGN_UP}>
       <div>
         <div className="flex flex-col items-center">
           <button className="flex w-full max-w-xs items-center justify-center rounded-lg bg-sky-100 py-3 font-bold shadow-sm transition-all duration-300 ease-in-out hover:bg-sky-200 hover:shadow focus:bg-sky-200 focus:shadow-sm focus:outline-none">
