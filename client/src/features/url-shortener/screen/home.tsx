@@ -1,3 +1,12 @@
+import { AboutUsSection, ContactUsSection, HeroSection, HowToUseSection } from '../components';
+
 export const HomeScreen = () => {
-  return <div>Home Screen</div>;
+  return (
+    <main>
+      <HeroSection />
+      <AboutUsSection />
+      <HowToUseSection />
+      <ContactUsSection />
+    </main>
+  );
 };
