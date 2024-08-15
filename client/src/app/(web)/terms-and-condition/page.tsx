@@ -1,7 +1,7 @@
-import React from 'react';
+import { TermsConditionScreen } from '@/features/url-shortener';
 
 const TermsConditionPage = () => {
-  return <div>Terms & Condition Page</div>;
+  return <TermsConditionScreen />;
 };
 
 export default TermsConditionPage;
