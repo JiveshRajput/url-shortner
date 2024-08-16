@@ -1,5 +1,7 @@
 import { INavigationLink } from './types';
 
+export const WEBSITE_NAME: string = 'QuickURL';
+
 export const NAVIGATION_LINKS: INavigationLink[] = [
   {
     name: 'Home',
@@ -7,14 +9,14 @@ export const NAVIGATION_LINKS: INavigationLink[] = [
   },
   {
     name: 'About Us',
-    link: '#about-us',
+    link: '/#about-us',
   },
   {
     name: 'How to use',
-    link: '#how-to-use',
+    link: '/#how-to-use',
   },
   {
     name: 'Contact',
-    link: '#contact-us',
+    link: '/#contact-us',
   },
 ];

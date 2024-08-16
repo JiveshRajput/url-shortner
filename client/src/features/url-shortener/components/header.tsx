@@ -12,7 +12,7 @@ import { IoClose } from 'react-icons/io5';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 // Constants
-import { FilledButton, NAVIGATION_LINKS } from '@/features/common';
+import { FilledButton, NAVIGATION_LINKS, WEBSITE_NAME } from '@/features/common';
 
 export const Header = () => {
   const [showNav, setShowNav] = useState(false);
@@ -31,12 +31,12 @@ export const Header = () => {
       ></div>
       {/* PC & Laptop Screen */}
       <div
-        className={`max-w-1200 max-md:shadow-nav z-[92] mx-auto flex h-full items-center justify-between gap-4 max-md:fixed max-md:right-0 max-md:top-0 max-md:h-screen max-md:w-[250px] max-md:flex-col max-md:items-start max-md:bg-white max-md:p-4 max-md:transition-all ${!showNav && 'max-md:right-[-300px]'}`}
+        className={`max-md:shadow-nav z-[92] mx-auto flex h-full max-w-1200 items-center justify-between gap-4 max-md:fixed max-md:right-0 max-md:top-0 max-md:h-screen max-md:w-[250px] max-md:flex-col max-md:items-start max-md:bg-white max-md:p-4 max-md:transition-all ${!showNav && 'max-md:right-[-300px]'}`}
       >
         {/* Logo */}
         <Link href="/" passHref className="max-md:hidden">
           {/* <Image src={IMAGES.LOGO_FULL} width={80} className="h-auto w-auto" alt="header_logo" /> */}
-          QuikLINK
+          {WEBSITE_NAME}
         </Link>
 
         {/* Navbar Close Button */}
@@ -75,7 +75,7 @@ export const Header = () => {
       </div>
 
       {/* Mobile Screen */}
-      <div className="max-w-1200 mx-auto flex h-full items-center justify-between md:hidden">
+      <div className="mx-auto flex h-full max-w-1200 items-center justify-between md:hidden">
         {/* Logo */}
         <Link href="/" passHref>
           {/* <Image src={IMAGES.LOGO_ICON} width={50} alt="logo" /> */}
