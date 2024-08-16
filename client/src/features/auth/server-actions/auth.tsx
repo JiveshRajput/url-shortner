@@ -8,7 +8,7 @@ export async function signInAction(formData: FormData) {
     password: formData.get('password'),
   };
 
-  redirect('/forgot-password');
+  redirect('/dashboard');
 }
 
 export async function signUpAction(formData: FormData) {
@@ -18,7 +18,7 @@ export async function signUpAction(formData: FormData) {
     name: formData.get('name'),
   };
 
-  redirect('/sign-in');
+  redirect('/dashboard');
 }
 
 export async function forgotPasswordAction(formData: FormData) {
