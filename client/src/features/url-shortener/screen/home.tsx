@@ -1,11 +1,11 @@
-import { AboutUsSection, ContactUsSection, HeroSection, HowToUseSection } from '../components';
+import { ProductSection, ContactUsSection, HeroSection, HowItWorksSection } from '../components';
 
 export const HomeScreen = () => {
   return (
     <main>
       <HeroSection />
-      <AboutUsSection />
-      <HowToUseSection />
+      <ProductSection />
+      <HowItWorksSection />
       <ContactUsSection />
     </main>
   );

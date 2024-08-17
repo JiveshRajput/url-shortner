@@ -3,16 +3,16 @@ import Link from 'next/link';
 
 export const Footer = () => {
   return (
-    <footer className="w-full bg-gray-50">
+    <footer className="w-full bg-slate-100">
       <section className="mx-auto max-w-1200 px-4 pb-7 pt-10">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 lg:flex-row">
+          <div className="flex flex-col items-center justify-between gap-6 border-b border-slate-300 pb-8 lg:flex-row">
             <Link href="/" className="py-1.5">
               {WEBSITE_NAME}
             </Link>
             <div className="flex flex-col items-center gap-6 lg:flex-row lg:gap-12">
               <ul className="flex flex-col items-center gap-5 sm:flex-row sm:gap-8">
-                {NAVIGATION_LINKS.map(({ name, link }, index) => (
+                {NAVIGATION_LINKS.map(({ name, link }) => (
                   <li key={name}>
                     <Link
                       href={link}

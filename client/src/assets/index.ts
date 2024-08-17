@@ -7,5 +7,6 @@ export const IMAGES = {
     AUTH_IMAGE_UPLOAD: require('./svg/auth-upload-image.svg'),
     AUTH_USER_VALIDATED: require('./svg/auth-user-verified.svg'),
     WEB_NOT_FOUND: require('./svg/web-not-found.svg'),
+    WEB_ANALYTICS_STATS: require('./svg/web-analytics-stats.svg'),
   },
 };

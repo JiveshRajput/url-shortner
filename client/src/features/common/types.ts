@@ -5,4 +5,6 @@ export interface INavigationLink {
 export interface IStep {
   title: string;
   description: string;
+  bgColor: string;
+  textColor: string;
 }

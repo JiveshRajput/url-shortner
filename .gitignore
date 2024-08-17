@@ -1,6 +1,7 @@
 url-shortener.ppk
 
 # Client
+client/ui
 client/node_modules
 client/.pnp
 client/.pnp.js
@@ -37,3 +38,4 @@ server/access.log
 server/.env
 
 url-shortener.ppk
+

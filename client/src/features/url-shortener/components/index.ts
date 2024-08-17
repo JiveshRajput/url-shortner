@@ -1,6 +1,7 @@
-export * from './header';
-export * from './footer';
-export * from './about-us';
 export * from './contact-us';
-export * from './how-to-use';
+export * from './footer';
+export * from './header';
 export * from './hero-section';
+export * from './how-it-works';
+export * from './product';
+
