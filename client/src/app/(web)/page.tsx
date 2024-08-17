@@ -1,4 +1,4 @@
-import { HomeScreen } from '@/features/url-shortener';
+import { HomeScreen } from '@/features/web';
 
 const HomePage = () => {
   return <HomeScreen />;

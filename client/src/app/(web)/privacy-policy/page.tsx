@@ -1,4 +1,4 @@
-import { PrivacyPolicyScreen } from '@/features/url-shortener';
+import { PrivacyPolicyScreen } from '@/features/web';
 import React from 'react';
 
 const PrivacyPolicyPage = () => {

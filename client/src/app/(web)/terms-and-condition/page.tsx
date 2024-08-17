@@ -1,4 +1,4 @@
-import { TermsConditionScreen } from '@/features/url-shortener';
+import { TermsConditionScreen } from '@/features/web';
 
 const TermsConditionPage = () => {
   return <TermsConditionScreen />;

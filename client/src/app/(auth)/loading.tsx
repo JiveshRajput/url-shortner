@@ -1,7 +1,7 @@
 import { Loader } from '@/features/common';
 
-const WebLoader = () => {
+const AuthLoader = () => {
   return <Loader />;
 };
 
-export default WebLoader;
+export default AuthLoader;

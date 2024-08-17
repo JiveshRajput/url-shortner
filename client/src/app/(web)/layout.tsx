@@ -1,4 +1,4 @@
-import { Footer, Header } from '@/features/url-shortener';
+import { Footer, Header } from '@/features/web';
 import { ReactNode } from 'react';
 
 const WebLayout = ({ children }: { children: ReactNode }) => {

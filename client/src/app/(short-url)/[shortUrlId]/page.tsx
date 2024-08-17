@@ -1,4 +1,4 @@
-import { IShortUrlIdPage, ShortUrlIdScreen } from '@/features/url-shortener';
+import { IShortUrlIdPage, ShortUrlIdScreen } from '@/features/web';
 
 const ShortUrlIdPage = (props: IShortUrlIdPage) => {
   const {
