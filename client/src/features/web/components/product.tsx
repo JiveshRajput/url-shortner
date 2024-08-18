@@ -1,7 +1,8 @@
 import { IMAGES } from '@/assets';
-import { FilledButton, SERVICES } from '@/features/common';
+import { FilledButton } from '@/features/common';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SERVICES } from '../constants';
 
 export const ProductSection = () => {
   return (

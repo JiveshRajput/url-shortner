@@ -1,3 +1,4 @@
+import { WEBSITE_NAME } from '@/features/common';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 
@@ -8,10 +9,10 @@ export const HeroSection = () => {
       className="relative mb-0 h-full w-full overflow-hidden p-4 pb-0 pt-12 md:pt-16"
     >
       <div className="absolute top-0 -z-10 h-full w-full bg-white">
-        <div className="animate-glitter absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[50%] translate-y-[20%] rounded-full bg-sky-300/50 opacity-50 blur-[80px] delay-1000"></div>
-        <div className="animate-glitter delay-1500 absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[5%] translate-y-[40%] rounded-full bg-amber-200/50 opacity-50 blur-[80px] max-md:hidden"></div>
-        <div className="animate-glitter delay-2000 absolute bottom-auto left-0 right-auto top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-red-300/50 opacity-50 blur-[80px] max-md:hidden"></div>
-        <div className="animate-glitter delay-2500 absolute bottom-auto left-0 right-auto top-0 h-[500px] w-[500px] translate-x-[60%] translate-y-[60%] rounded-full bg-green-300/50 opacity-50 blur-[80px]"></div>
+        <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[50%] translate-y-[20%] animate-glitter rounded-full bg-sky-300/50 opacity-50 blur-[80px] delay-1000"></div>
+        <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[5%] translate-y-[40%] animate-glitter rounded-full bg-amber-200/50 opacity-50 blur-[80px] delay-1500 max-md:hidden"></div>
+        <div className="absolute bottom-auto left-0 right-auto top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] animate-glitter rounded-full bg-red-300/50 opacity-50 blur-[80px] delay-2000 max-md:hidden"></div>
+        <div className="absolute bottom-auto left-0 right-auto top-0 h-[500px] w-[500px] translate-x-[60%] translate-y-[60%] animate-glitter rounded-full bg-green-300/50 opacity-50 blur-[80px] delay-2500"></div>
       </div>
       <div className="mx-auto max-w-1200">
         <section className="lg:pt-10">
@@ -35,7 +36,7 @@ export const HeroSection = () => {
             </h1>
             <p className="mx-auto mb-9 max-w-[650px] text-center text-base font-normal leading-7 text-gray-700">
               Create Short links, QR Codes, share them anywhere. Track what is working, and what is
-              not. All inside the <b>QuickURL Connections Platform</b>
+              not. All inside the <b>{WEBSITE_NAME} Connections Platform</b>
             </p>
             <Link
               href="/sign-in"

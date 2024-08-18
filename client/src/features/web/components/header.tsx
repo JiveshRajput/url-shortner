@@ -12,7 +12,8 @@ import { IoClose } from 'react-icons/io5';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 // Constants
-import { FilledButton, NAVIGATION_LINKS, WEBSITE_NAME } from '@/features/common';
+import { FilledButton, WEBSITE_NAME } from '@/features/common';
+import { NAVIGATION_LINKS } from '../constants';
 
 export const Header = () => {
   const [showNav, setShowNav] = useState(false);
@@ -49,18 +50,18 @@ export const Header = () => {
         {/* Navbar */}
         <nav className="h-full max-md:w-full md:flex">
           <ul className="flex items-center justify-center gap-2 max-md:w-full max-md:flex-col">
-            {NAVIGATION_LINKS.map((tab, ind) => {
+            {NAVIGATION_LINKS.map(({ link, name }, ind) => {
               return (
                 <li key={ind} className="max-md:w-full">
                   <Link
-                    className={`block rounded-lg p-2 px-4 font-medium text-black transition hover:bg-sky-50 hover:text-sky-500 focus:bg-sky-50 focus:text-sky-500 focus:outline-none ${activeTab == tab.link && 'bg-sky-100 text-sky-500'}`}
+                    className={`block rounded-lg p-2 px-4 font-medium text-black transition hover:bg-sky-50 hover:text-sky-500 focus:bg-sky-50 focus:text-sky-500 focus:outline-none ${activeTab == link && 'bg-sky-100 text-sky-500'}`}
                     onClick={() => {
-                      setActiveTab(tab.link);
+                      setActiveTab(link);
                       setShowNav(false);
                     }}
-                    href={tab.link}
+                    href={link}
                   >
-                    {tab.name}
+                    {name}
                   </Link>
                 </li>
               );
@@ -79,7 +80,7 @@ export const Header = () => {
         {/* Logo */}
         <Link href="/" passHref>
           {/* <Image src={IMAGES.LOGO_ICON} width={50} alt="logo" /> */}
-          QuikLINK
+          {WEBSITE_NAME}
         </Link>
         {/* Hamburger Icon */}
         <div className="md:hidden" onClick={() => setShowNav(true)}>

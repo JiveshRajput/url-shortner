@@ -1,4 +1,4 @@
-import { STEPS } from '@/features/common';
+import { STEPS } from '../constants';
 
 export const HowItWorksSection = () => {
   return (

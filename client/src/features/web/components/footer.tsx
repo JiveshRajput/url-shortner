@@ -1,5 +1,6 @@
-import { NAVIGATION_LINKS, TranslucentButton, WEBSITE_NAME } from '@/features/common';
+import { TranslucentButton, WEBSITE_NAME } from '@/features/common';
 import Link from 'next/link';
+import { NAVIGATION_LINKS } from '../constants';
 
 export const Footer = () => {
   return (
