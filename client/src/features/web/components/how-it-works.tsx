@@ -12,11 +12,11 @@ export const HowItWorksSection = () => {
             </h3>
           </div>
           <div className="mt-10">
-            <ul className="grid gap-4 md:grid-cols-5">
+            <ul className="flex flex-wrap justify-center gap-4">
               {STEPS.map(({ description, title, bgColor, textColor }, index) => (
                 <li
                   key={index}
-                  className="relative mt-10 cursor-pointer rounded-lg bg-white p-5 text-center shadow-md"
+                  className="relative mt-10 w-[300px] cursor-pointer rounded-lg bg-white p-5 text-center shadow-md max-sm:w-full"
                 >
                   <div className="flex flex-col items-center">
                     <div className="-shrink-0 absolute top-0 -mt-10">

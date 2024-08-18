@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 export const FilledButton = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="rounded-lg bg-sky-500 px-6 py-2 text-center font-medium text-white focus:bg-sky-700">
+    <div className="rounded-lg bg-sky-500 px-6 py-2 text-center font-medium text-white transition duration-300 hover:bg-sky-700 focus:bg-sky-700">
       {children}
     </div>
   );

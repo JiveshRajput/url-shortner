@@ -5,9 +5,10 @@ import Link from 'next/link';
 
 export const ProductSection = () => {
   return (
-    <section id="product" className="h-full w-full p-4 py-10 md:py-16">
+    <section id="product" className="relative h-full w-full p-4 py-10 md:py-16">
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div className="mx-auto max-w-1000">
-        <div className="rounded-lg bg-slate-100 p-4 max-md:p-8">
+        <div className="rounded-lg bg-slate-100 p-8 max-md:p-4 max-md:py-8">
           <div className="text-center">
             <h1 className="mx-auto mb-2 text-center text-5xl font-semibold leading-tight max-md:text-3xl">
               Explore features
@@ -19,9 +20,9 @@ export const ProductSection = () => {
               {SERVICES.map(({ name, Icon, cardCss, iconCss }) => (
                 <div
                   key={name}
-                  className={`group flex cursor-pointer gap-1 rounded-full border hover:text-white p-1 pr-3 transition ${cardCss}`}
+                  className={`group flex cursor-pointer gap-1 rounded-full border p-1 pr-3 transition hover:text-white ${cardCss}`}
                 >
-                  <div className={`${iconCss} group-hover:bg-white rounded-full p-1 text-white`}>
+                  <div className={`${iconCss} rounded-full p-1 text-white group-hover:bg-white`}>
                     <Icon />
                   </div>
                   <p className="font-semibold">{name}</p>

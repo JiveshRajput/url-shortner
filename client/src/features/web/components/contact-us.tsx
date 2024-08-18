@@ -3,17 +3,22 @@ import Link from 'next/link';
 
 export const ContactUsSection = () => {
   return (
-    <section id="contact-us" className="h-full w-full  p-4 py-10 md:py-16">
+    <section
+      id="contact-us"
+      className="relative z-0 h-full w-full overflow-hidden p-4 py-10 md:py-16"
+    >
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="absolute bottom-0 left-0 -z-10 h-[300px] w-[300px] translate-x-[5%] translate-y-[10%] rounded-full bg-green-300/50 opacity-50 blur-[80px] max-md:hidden"></div>
       <div className="mx-auto max-w-1200">
         <div className="mx-auto grid grid-cols-1 gap-8 text-gray-900 md:grid-cols-2">
           <div className="flex flex-col justify-between">
             <div>
-              <h2 className="text-4xl font-bold leading-tight lg:text-5xl">
-                Lets talk about everything!
+              <h2 className="text-4xl font-bold leading-normal lg:text-5xl">
+                Lets talk about everything👋!
               </h2>
               <div className="mt-8 text-gray-700">
                 Hate forms? Send us an email instead{' '}
-                <span className="underline text-sky-500">
+                <span className="text-sky-500 underline">
                   <Link target="_blank" href="mailto:jsoperatorz@gmail.com">
                     jsoperatorz@gmail.com
                   </Link>

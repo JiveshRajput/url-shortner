@@ -68,6 +68,10 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        glitter: {
+          '0%, 100%': { opacity: '100%' },
+          '50%': { opacity: '0%' },
+        },
       },
       fontFamily: {
         inter: [`var(--font-inter)`],
@@ -75,6 +79,7 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        glitter: 'glitter 3s ease-out infinite',
       },
       maxWidth: {
         '1200': '1240px',
@@ -91,6 +96,11 @@ const config = {
         '800': '800px',
         '500': '500px',
         '400': '400px',
+      },
+      transitionDelay: {
+        1500: '1500ms',
+        2000: '2000ms',
+        2500: '2500ms',
       },
     },
   },

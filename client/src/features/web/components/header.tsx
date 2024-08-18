@@ -53,7 +53,7 @@ export const Header = () => {
               return (
                 <li key={ind} className="max-md:w-full">
                   <Link
-                    className={`block rounded-lg p-2 px-4 font-medium text-black hover:bg-sky-50 hover:text-sky-500 ${activeTab == tab.link && 'bg-sky-50 text-sky-500'}`}
+                    className={`block rounded-lg p-2 px-4 font-medium text-black transition hover:bg-sky-50 hover:text-sky-500 focus:bg-sky-50 focus:text-sky-500 focus:outline-none ${activeTab == tab.link && 'bg-sky-100 text-sky-500'}`}
                     onClick={() => {
                       setActiveTab(tab.link);
                       setShowNav(false);
@@ -69,7 +69,7 @@ export const Header = () => {
         </nav>
 
         {/* Contact Us Button */}
-        <Link href="/sign-in" passHref>
+        <Link href="/sign-in" passHref className="rounded-lg">
           <FilledButton>Sign in</FilledButton>
         </Link>
       </div>
