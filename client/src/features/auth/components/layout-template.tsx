@@ -1,4 +1,5 @@
 import { IMAGES } from '@/assets';
+import { WEBSITE_NAME } from '@/features/common';
 import Image from 'next/image';
 import React, { ReactNode } from 'react';
 
@@ -12,12 +13,14 @@ export const AuthLayout = (props: IAuthLayout) => {
   const { title = '', imageSrc = IMAGES.SVG.AUTH_SIGN_UP, children } = props;
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-gray-900 max-lg:justify-center">
+    <main className="flex min-h-[100dvh] bg-gray-100 text-gray-900 max-lg:justify-center">
       <div className="m-0 flex flex-1 bg-white shadow lg:justify-center">
-        <div className="flex w-full flex-col items-center justify-center p-4 sm:p-10 md:w-1/2 xl:w-5/12">
+        {/* Left Side */}
+        <div className="relative z-0 flex h-full w-full flex-col items-center justify-center p-4 sm:p-10 md:w-1/2 xl:w-5/12">
+          <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e0e0e0_1px,transparent_1px)] [background-size:16px_16px]"></div>
           <div>
             {/* TODO: Add logo there */}
-            <p className="text-center">Quick URL</p>
+            <p className="text-center">{WEBSITE_NAME}</p>
           </div>
           <div className="mt-4 flex flex-col items-center">
             <h1 className="text-center text-2xl font-extrabold xl:text-3xl">{title}</h1>
@@ -28,6 +31,6 @@ export const AuthLayout = (props: IAuthLayout) => {
           <Image alt={title} src={imageSrc} width={600} height={800} className="h-full" />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
