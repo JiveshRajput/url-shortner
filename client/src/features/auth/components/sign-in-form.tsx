@@ -1,21 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
-import { signInAction } from '../server-actions';
-import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
+import { signInAction } from '../server-actions';
 
 export const SignInForm = () => {
-  const [state, formAction] = useFormState(signInAction, { message: '' });
+  /**
+   * This method is used to sign in.
+   * @param formData: Formdata includes email and password
+   */
+  const handleSignIn = async (formData: FormData) => {
+    const response = await signInAction(formData);
+    if (response?.errorMessage) {
+      toast.error(response.errorMessage);
+    }
 
-  useEffect(() => {
-    toast.error(state?.message);
-  }, [state?.message]);
+    if (response?.successMessage) {
+      toast.success(response.successMessage);
+      redirect('/dashboard');
+    }
+  };
 
   return (
     <div>
-      <div className="flex flex-col items-center">
+      {/* GOOGLE AUTHENTICATION BUTTON */}
+      {/* <div className="flex flex-col items-center">
         <button className="flex w-full max-w-xs items-center justify-center rounded-lg bg-sky-100 py-3 font-bold shadow-sm transition-all duration-300 ease-in-out hover:bg-sky-200 hover:shadow focus:bg-sky-200 focus:shadow-sm focus:outline-none">
           <div className="rounded-full bg-white p-2">
             <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -39,16 +49,16 @@ export const SignInForm = () => {
           </div>
           <span className="ml-4">Sign In with Google</span>
         </button>
-      </div>
+      </div> */}
 
-      <div className="mb-8 mt-4 border-b text-center">
+      {/* <div className="mb-8 mt-4 border-b text-center">
         <div className="inline-block translate-y-1/2 transform bg-white px-2 text-sm font-medium leading-none tracking-wide">
           Or sign in with e-mail
         </div>
-      </div>
+      </div> */}
 
       <div className="mx-auto max-w-xs">
-        <form action={formAction}>
+        <form action={handleSignIn}>
           <input
             className="mb-4 w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
             type="email"
@@ -84,7 +94,6 @@ export const SignInForm = () => {
           </Link>
         </p>
       </div>
-      {/* <p>{state?.message}</p> */}
     </div>
   );
 };
