@@ -16,6 +16,7 @@ const {
   resetPasswordController,
   authenticateUserController,
   resetPasswordByOtpController,
+  sendOtpByEmailController,
 } = authControllers;
 
 // Post: Register User API
@@ -53,5 +54,8 @@ authRoutes
 
 // Post: Authenticate User API
 authRoutes.route('/authenticate').post(verifyTokenMiddleware, authenticateUserController);
+
+// Post: Send OTP to user's email API
+authRoutes.route('/send-otp-by-email').post(sendOtpByEmailController);
 
 export default authRoutes;

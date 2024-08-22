@@ -494,6 +494,47 @@ export const sendOtpController: IRequestHandler = async (
 };
 
 /**
+ * This controller is used to send OTP on registered user's mail.
+ * @param {IRequest} request: HTTP Request object
+ * @param {IResponse} response: HTTP Response object
+ * @param {INextFunction} next: Callback argument to the middleware function
+ * @returns {Promise<void>}: Returns a promise
+ */
+export const sendOtpByEmailController: IRequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { email } = request.body;
+
+    const user = await UserModel.findOne({ email });
+    console.log(user);
+    if (!user) {
+      throw new Error(messages.emailNotRegisteredMessage);
+    }
+
+    // finding unqiue OTP.
+    let otp = generateOtp();
+    let isOtpExists = await OtpModel.findOne({ otp });
+    while (isOtpExists) {
+      otp = generateOtp();
+      isOtpExists = await OtpModel.findOne({ otp });
+    }
+
+    await OtpModel.create({ email, otp });
+
+    // sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.otpSentSuccessMessage,
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.otpSentFailureMessage));
+  }
+};
+
+/**
  * This controller is used to verify the email for registered user.
  * @param {IRequest} request: HTTP Request object
  * @param {IResponse} response: HTTP Response object

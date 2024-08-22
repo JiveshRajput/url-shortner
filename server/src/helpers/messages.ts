@@ -36,6 +36,7 @@ export const messages = {
   cannotUpdatePasswordMessage: 'Cannot update password from here. Use different API !!!',
   passwordResetSuccessMessage: 'Password reset successfully!!!',
   passwordResetFailedMessage: 'Password reset failed!!!',
+  emailNotRegisteredMessage: 'Email not registered!!!',
 
   // Token messages
   missingRefreshToknMessage: 'Refresh token missing!!!',
