@@ -379,24 +379,21 @@ export const resetPasswordByOtpController: IRequestHandler = async (
   next: INextFunction,
 ): Promise<void> => {
   try {
-    const { userId } = request.params;
-    const { password, otp } = request.body;
-
-    // checking if jwt userId and current userId is same or not
-    const user = sameUserValidator(request, userId, next);
-    if (!user) {
-      throw new Error(messages.accessDeniedMessage);
-    }
+    const { password, otp, email } = request.body;
 
     // Checking are values present
-    if (!(otp && password)) {
+    if (!(otp && password && email)) {
       throw new Error(messages.missingCredentialsMessage);
     }
 
+    // Checking user
+    const userData = await UserModel.findOne({ email });
+    if (!userData) {
+      throw new Error(messages.userNotExistsMessage);
+    }
+
     // Find the most recent OTP for the email
-    const otpResponse = await OtpModel.find({ email: user?.email })
-      .sort({ createdAt: -1 })
-      .limit(1);
+    const otpResponse = await OtpModel.find({ email }).sort({ createdAt: -1 }).limit(1);
 
     // matching the OTP value
     if (otpResponse.length === 0 || otp !== otpResponse[0].otp) {
@@ -405,12 +402,6 @@ export const resetPasswordByOtpController: IRequestHandler = async (
 
     // Deleting OTP
     otpResponse[0].deleteOne();
-
-    // Checking user
-    const userData = await UserModel.findById(userId);
-    if (!userData) {
-      throw new Error(messages.userNotExistsMessage);
-    }
 
     // Hashing the password and saving it
     userData.password = await hashKey(password);
@@ -509,7 +500,6 @@ export const sendOtpByEmailController: IRequestHandler = async (
     const { email } = request.body;
 
     const user = await UserModel.findOne({ email });
-    console.log(user);
     if (!user) {
       throw new Error(messages.emailNotRegisteredMessage);
     }
