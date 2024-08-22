@@ -14,7 +14,7 @@ export const API_ROUTE = {
     SIGN_UP: `/auth/register`,
     SEND_OTP: `/auth/send-otp`,
     VERIFY_OTP: `/auth/verify-otp`,
-    SEND_OTP_BY_MAIL: `/auth/send-otp-by-mail`,
+    SEND_OTP_BY_MAIL: `/auth/send-otp-by-email`,
     RESET_PASSWORD: `/auth/reset-password-by-otp`,
     SIGN_OUT: `/auth/logout`,
   },

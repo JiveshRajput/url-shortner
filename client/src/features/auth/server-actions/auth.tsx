@@ -130,6 +130,9 @@ export async function forgotPasswordAction(formData: FormData) {
     const payload = {
       email: formData.get('email') as string,
     };
+
+    payload.email = payload.email.toLowerCase();
+
     const response = await sendOtpByMailApi(payload);
     const data = await response.json();
 
@@ -139,6 +142,7 @@ export async function forgotPasswordAction(formData: FormData) {
 
     return {
       successMessage: data?.message,
+      email: payload.email,
     };
   } catch (error: any) {
     console.log(error);
@@ -151,8 +155,9 @@ export async function resetPasswordAction(formData: FormData) {
     const payload = {
       otp: formData.get('otp') as string,
       password: formData.get('password') as string,
+      email: formData.get('email') as string,
     };
-
+    
     const response = await resetPasswordApi(payload);
     const data = await response.json();
 
