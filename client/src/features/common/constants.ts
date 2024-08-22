@@ -11,7 +11,11 @@ export const REFRESH_TOKEN_EXPIRY: number = 7 * DAY;
 export const API_ROUTE = {
   AUTH: {
     SIGN_IN: `/auth/login`,
-    SIGN_UP: `/auth/logout`,
-    SIGN_OUT: ``,
+    SIGN_UP: `/auth/register`,
+    SEND_OTP: `/auth/send-otp`,
+    VERIFY_OTP: `/auth/verify-otp`,
+    SEND_OTP_BY_MAIL: `/auth/send-otp-by-mail`,
+    RESET_PASSWORD: `/auth/reset-password-by-otp`,
+    SIGN_OUT: `/auth/logout`,
   },
 };

@@ -18,7 +18,7 @@ export const SignUpForm = () => {
 
     if (response?.successMessage) {
       toast.success(response.successMessage);
-      redirect('/dashboard');
+      redirect('/verify-otp');
     }
   };
 

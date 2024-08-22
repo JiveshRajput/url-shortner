@@ -1,9 +1,19 @@
 'use server';
 
+import { REFRESH_TOKEN_EXPIRY } from '@/features/common';
+import { IStatus } from '@/types';
+import { setCookies } from '@/utils';
 import { redirect } from 'next/navigation';
-import { signInApi, signUpApi } from '../api';
-import { cookies } from 'next/headers';
-import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from '@/features/common';
+import {
+  resetPasswordApi,
+  sendOtpApi,
+  sendOtpByMailApi,
+  signInApi,
+  signUpApi,
+  verifyOtpApi,
+} from '../api';
+import { COOKIES } from '../constants';
+import { createSession } from './session';
 
 export async function signInAction(formData: FormData) {
   try {
@@ -15,29 +25,23 @@ export async function signInAction(formData: FormData) {
     const result = await signInApi(payload);
     const data = await result.json();
 
-    if (data.status === 'FAIL') {
-      throw new Error(data.message);
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
     }
 
     const { accessToken, refreshToken } = data;
-    const accessTokenExpiry = new Date(Date.now() + ACCESS_TOKEN_EXPIRY);
 
-    cookies().set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      expires: accessTokenExpiry,
-      sameSite: 'lax',
-      path: '/',
-    });
+    createSession(accessToken);
 
     const refreshTokenExpiry = new Date(Date.now() + REFRESH_TOKEN_EXPIRY);
-    cookies().set('refreshToken', refreshToken, {
+    setCookies(COOKIES.REFRESH_TOKEN, refreshToken, {
       httpOnly: true,
       secure: true,
       expires: refreshTokenExpiry,
       sameSite: 'lax',
       path: '/',
     });
+
     return {
       successMessage: data?.message,
     };
@@ -55,32 +59,62 @@ export async function signUpAction(formData: FormData) {
       name: formData.get('name') as string,
     };
 
+    payload.email = payload.email.toLowerCase();
+
     const result = await signUpApi(payload);
     const data = await result.json();
 
-    if (data.status === 'FAIL') {
+    if (data.status === IStatus.FAIL) {
       throw new Error(data.message);
     }
 
     const { accessToken, refreshToken } = data;
-    const accessTokenExpiry = new Date(Date.now() + ACCESS_TOKEN_EXPIRY);
 
-    cookies().set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      expires: accessTokenExpiry,
-      sameSite: 'lax',
-      path: '/',
-    });
+    createSession(accessToken);
 
     const refreshTokenExpiry = new Date(Date.now() + REFRESH_TOKEN_EXPIRY);
-    cookies().set('refreshToken', refreshToken, {
+    setCookies(COOKIES.REFRESH_TOKEN, refreshToken, {
       httpOnly: true,
       secure: true,
       expires: refreshTokenExpiry,
       sameSite: 'lax',
       path: '/',
     });
+
+    // User id cookie
+    setCookies(COOKIES.USER_ID, data.data._id, {
+      secure: true,
+      expires: refreshTokenExpiry,
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    // Send OTP for verification
+    const otpResponse = await sendOtpApi();
+    const otpData = await otpResponse.json();
+    console.log('otp data:', otpData);
+
+    return {
+      successMessage: otpData?.message,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return { errorMessage: String(error?.message) };
+  }
+}
+
+export async function verifyOtpAction(formData: FormData) {
+  try {
+    const payload = {
+      otp: formData.get('otp') as string,
+    };
+
+    const result = await verifyOtpApi(payload);
+    const data = await result.json();
+
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
 
     return {
       successMessage: data?.message,
@@ -92,18 +126,45 @@ export async function signUpAction(formData: FormData) {
 }
 
 export async function forgotPasswordAction(formData: FormData) {
-  const payload = {
-    email: formData.get('email'),
-  };
+  try {
+    const payload = {
+      email: formData.get('email') as string,
+    };
+    const response = await sendOtpByMailApi(payload);
+    const data = await response.json();
 
-  redirect('/reset-password');
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
+
+    return {
+      successMessage: data?.message,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return { errorMessage: String(error?.message) };
+  }
 }
 
 export async function resetPasswordAction(formData: FormData) {
-  const payload = {
-    otp: formData.get('otp'),
-    password: formData.get('password'),
-  };
+  try {
+    const payload = {
+      otp: formData.get('otp') as string,
+      password: formData.get('password') as string,
+    };
 
-  redirect('/dashboard');
+    const response = await resetPasswordApi(payload);
+    const data = await response.json();
+
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
+
+    return {
+      successMessage: data?.message,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return { errorMessage: String(error?.message) };
+  }
 }

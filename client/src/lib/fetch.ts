@@ -1,68 +1,30 @@
+import { COOKIES } from '@/features/auth/constants';
 import { BACKEND_API_URL } from '@/features/common';
-// import { Fetcher } from './fetcher';
+import { getCookies } from '@/utils';
+import { Fetcher } from './fetcher';
 
-// const fetchs = new Fetcher({
-//   baseUrl: BACKEND_API_URL,
-//   headers: { 'Content-Type': 'application/json' },
-// });
+const fetchInstance = new Fetcher({
+  baseUrl: BACKEND_API_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
 
-// fetchs.baseUrl = BACKEND_API_URL;
+fetchInstance.baseUrl = BACKEND_API_URL;
 
-// fetchs.interceptor.request = (options) => {
-//   return options;
-// };
+fetchInstance.interceptor.request = (options) => {
+  const accessToken = getCookies(COOKIES.ACCESS_TOKEN);
+  const userId = getCookies(COOKIES.USER_ID);
 
-const fetcher = async (url: string, body: object = {}, options: RequestInit = {}) => {
-  const fullUrl = `${BACKEND_API_URL}${url}`;
+  options.headers = {
+    ...options.headers,
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+  };
 
-  if (!options) {
-    return await fetch(fullUrl);
-  }
-  return await fetch(fullUrl, {
-    headers: {
-      'content-type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-    body: JSON.stringify(body),
-    method: 'GET',
-  });
+  options.body = {
+    ...(userId ? { userId } : {}),
+  } as BodyInit;
+
+  console.log('interceptor', options);
+  return options;
 };
 
-fetcher.get = async (url: string, body: object = {}, options: RequestInit = {}) => {
-  const fullUrl = `${BACKEND_API_URL}${url}`;
-
-  if (!options) {
-    return await fetch(fullUrl, { method: 'GET' });
-  }
-
-  return await fetch(fullUrl, {
-    headers: {
-      'content-type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-    body: JSON.stringify(body),
-    method: 'GET',
-  });
-};
-
-fetcher.post = async (url: string, body: object = {}, options: RequestInit = {}) => {
-  const fullUrl = `${BACKEND_API_URL}${url}`;
-
-  if (!options) {
-    return await fetch(fullUrl, { method: 'POST' });
-  }
-
-  return await fetch(fullUrl, {
-    headers: {
-      'content-type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-    body: JSON.stringify(body),
-    method: 'POST',
-  });
-};
-
-export { fetcher as fetch };
+export { fetchInstance as fetch };

@@ -5,3 +5,8 @@ export enum API_METHODS {
   PUT = 'PUT',
   DELETE = 'DELETE',
 }
+
+export interface IFetchInterceptor {
+  request: (options: RequestInit) => typeof options;
+  response: (response: Response) => typeof response;
+}

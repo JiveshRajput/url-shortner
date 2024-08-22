@@ -1,15 +1,18 @@
-import { API_METHODS } from '@/types';
+import { API_METHODS, IFetchInterceptor } from '@/types';
 export class Fetcher {
+  // base url
   public baseUrl: string = '';
+
+  // common headers
   public headers: HeadersInit = {};
-  public interceptor: {
-    request: (options: RequestInit) => typeof options;
-    response: (response: Response) => typeof response;
-  } = {
+
+  // request & response interceptor
+  public interceptor: IFetchInterceptor = {
     request: (options: RequestInit) => options,
     response: (response: Response) => response,
   };
 
+  // constructor
   constructor(options: { baseUrl?: string; headers?: HeadersInit } = {}) {
     if (options?.baseUrl) {
       this.baseUrl = options?.baseUrl;
@@ -18,60 +21,54 @@ export class Fetcher {
       this.headers = options?.headers;
     }
   }
-  get = async (url: string, body: object = {}, options: RequestInit = {}) => {
-    // creating full url
-    const fullUrl: string = `${this.baseUrl}${url}`;
-    const method: API_METHODS = API_METHODS.GET;
 
-    // response interceptor
-    options = this.interceptor.request(options);
-    let response;
-    if (!options) {
-      response = await fetch(fullUrl, { method });
-    } else {
-      response = await fetch(fullUrl, {
+  makeCall =
+    (method: API_METHODS) =>
+    async (url: string, body: object = {}, options: RequestInit = {}) => {
+      // creating full url
+      const fullUrl: string = `${this.baseUrl}${url}`;
+
+      // request interceptor
+      options = this.interceptor.request({
         ...options,
-        headers: {
-          ...this.headers,
-          ...options.headers,
-        },
-        body: JSON.stringify(body),
-        method,
+        headers: { ...this.headers, ...options.headers },
       });
-    }
 
-    // response interceptor
-    response = this.interceptor.response(response);
-    console.log(response);
-    // return the updated response
-    return response;
-  };
+      let response: Response;
 
-  post = async (url: string, body: object = {}, options: RequestInit = {}) => {
-    // creating full url
-    const fullUrl: string = `${this.baseUrl}${url}`;
-    const method: API_METHODS = API_METHODS.POST;
-    // response interceptor
-    options = this.interceptor.request(options);
-    let response;
-    if (!options) {
-      response = await fetch(fullUrl, { method });
-    } else {
-      response = await fetch(fullUrl, {
-        ...options,
-        headers: {
-          ...this.headers,
-          ...options.headers,
-        },
-        body: JSON.stringify(body),
-        method,
-      });
-    }
+      if (!options && !body) {
+        response = await fetch(fullUrl, { method });
+      } else {
+        const resquestBody = {
+          ...options,
+          ...(Object.values(body).length >= 1 || Object.values(options.body as object).length >= 1
+            ? { body: JSON.stringify({ ...body, ...(options.body as object) }) }
+            : {}),
+          method,
+        };
 
-    // response interceptor
-    response = this.interceptor.response(response);
+        response = await fetch(fullUrl, resquestBody);
+      }
 
-    // return the updated response
-    return response;
-  };
+      // response interceptor
+      response = this.interceptor.response(response);
+
+      // return the updated response
+      return response;
+    };
+
+  // get call
+  get = this.makeCall(API_METHODS.GET);
+
+  // post call
+  post = this.makeCall(API_METHODS.POST);
+
+  // patch call
+  patch = this.makeCall(API_METHODS.PATCH);
+
+  // put call
+  put = this.makeCall(API_METHODS.PUT);
+
+  // delete call
+  delete = this.makeCall(API_METHODS.DELETE);
 }
