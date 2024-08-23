@@ -70,7 +70,7 @@ export const registerUserController: IRequestHandler = async (
     );
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.registerFailedMessage, 401));
+    next(CreateError.clientError(error?.message || messages.registerFailedMessage));
   }
 };
 
@@ -262,7 +262,7 @@ export const logoutUserController: IRequestHandler = async (
     // Sending success response
     response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next(CreateError.clientError(error?.message || messages.logoutFailedMessage, 401));
+    next(CreateError.clientError(error?.message || messages.logoutFailedMessage));
   }
 };
 
