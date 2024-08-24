@@ -16,9 +16,9 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     const response = await authenticateUserApi();
     const data = await response.json();
 
-    if (data.statusCode !== 200) {
-      return NextResponse.redirect(new URL('/sign-in', request.url));
-    }
+    // if (data.statusCode !== 200) {
+    //   return NextResponse.redirect(new URL('/sign-in', request.url));
+    // }
 
     return NextResponse.next();
   } catch (error) {

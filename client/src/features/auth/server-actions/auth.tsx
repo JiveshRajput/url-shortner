@@ -1,9 +1,11 @@
 'use server';
 
-import { navigate, REFRESH_TOKEN_EXPIRY } from '@/features/common';
+import { REFRESH_TOKEN_EXPIRY } from '@/features/common';
 import { IStatus } from '@/types';
 import { getCookies, setCookies } from '@/utils';
 import {
+  authenticateUserApi,
+  getAccessTokenApi,
   resetPasswordApi,
   sendOtpApi,
   sendOtpByMailApi,
@@ -185,14 +187,24 @@ export async function checkUserAlreadyLoggedInAction() {
   const accessToken = getCookies(COOKIES.ACCESS_TOKEN) as string;
   const userId = getCookies(COOKIES.USER_ID) as string;
 
-  if (refreshToken && accessToken && userId) {
+  const response = await authenticateUserApi();
+
+  if (refreshToken && accessToken && userId && response.status === 200) {
     return true;
   }
   return false;
 }
 
-export async function redirectIfUserAlreadyLoggedInAction() {
-  const isAlreadyLoggedIn = await checkUserAlreadyLoggedInAction();
-  if (isAlreadyLoggedIn) navigate('/dashboard');
-}
+export async function getAccessTokenByRefreshToken() {
+  const refreshToken = (await getCookies(COOKIES.REFRESH_TOKEN)) as string;
+  console.log('REFRESH TOKEN:', refreshToken);
+  const accessTokenResponse: any = await getAccessTokenApi({ refreshToken });
 
+  const accessTokenData: any = await accessTokenResponse.json();
+
+  console.log('accessTokenData:', accessTokenData);
+
+  const accessToken: string = accessTokenData?.data?.accessToken as string;
+
+  return accessToken;
+}

@@ -35,10 +35,12 @@ export class Fetcher {
       });
 
       let request: Request;
+      let requestClone: Request;
       let response: Response;
 
       if (!options && !body) {
         request = new Request(fullUrl, { method });
+        requestClone = request.clone();
         response = await fetch(request);
       } else {
         const payload = {
@@ -50,11 +52,12 @@ export class Fetcher {
         };
 
         request = new Request(fullUrl, payload);
+        requestClone = request.clone();
         response = await fetch(request);
       }
 
       // response interceptor
-      response = await this.interceptor.response(response, request);
+      response = await this.interceptor.response(response, requestClone);
 
       // return the updated response
       return response;
