@@ -35,7 +35,7 @@ authRoutes.route('/login').post(loginUserController);
 authRoutes.route('/logout').post(verifyTokenMiddleware, logoutUserController);
 
 // Get: Get Access Token API
-authRoutes.route('/get-access-token').get(getAccessTokenController);
+authRoutes.route('/get-access-token').post(getAccessTokenController);
 
 // Get: Get User Detail's API
 // Patch: Update User Detail's API
