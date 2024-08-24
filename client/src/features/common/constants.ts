@@ -17,5 +17,7 @@ export const API_ROUTE = {
     SEND_OTP_BY_MAIL: `/auth/send-otp-by-email`,
     RESET_PASSWORD: `/auth/reset-password-by-otp`,
     SIGN_OUT: `/auth/logout`,
+    AUTHENTICATE: `/auth/authenticate`,
+    GET_ACCESS_TOKEN: `/auth/get-access-token`,
   },
 };

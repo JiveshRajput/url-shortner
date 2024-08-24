@@ -1,9 +1,8 @@
 'use server';
 
-import { REFRESH_TOKEN_EXPIRY } from '@/features/common';
+import { navigate, REFRESH_TOKEN_EXPIRY } from '@/features/common';
 import { IStatus } from '@/types';
-import { setCookies } from '@/utils';
-import { redirect } from 'next/navigation';
+import { getCookies, setCookies } from '@/utils';
 import {
   resetPasswordApi,
   sendOtpApi,
@@ -36,6 +35,14 @@ export async function signInAction(formData: FormData) {
     const refreshTokenExpiry = new Date(Date.now() + REFRESH_TOKEN_EXPIRY);
     setCookies(COOKIES.REFRESH_TOKEN, refreshToken, {
       httpOnly: true,
+      secure: true,
+      expires: refreshTokenExpiry,
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    // User id cookie
+    setCookies(COOKIES.USER_ID, data.data._id, {
       secure: true,
       expires: refreshTokenExpiry,
       sameSite: 'lax',
@@ -92,7 +99,6 @@ export async function signUpAction(formData: FormData) {
     // Send OTP for verification
     const otpResponse = await sendOtpApi();
     const otpData = await otpResponse.json();
-    console.log('otp data:', otpData);
 
     return {
       successMessage: otpData?.message,
@@ -157,7 +163,7 @@ export async function resetPasswordAction(formData: FormData) {
       password: formData.get('password') as string,
       email: formData.get('email') as string,
     };
-    
+
     const response = await resetPasswordApi(payload);
     const data = await response.json();
 
@@ -173,3 +179,20 @@ export async function resetPasswordAction(formData: FormData) {
     return { errorMessage: String(error?.message) };
   }
 }
+
+export async function checkUserAlreadyLoggedInAction() {
+  const refreshToken = getCookies(COOKIES.REFRESH_TOKEN) as string;
+  const accessToken = getCookies(COOKIES.ACCESS_TOKEN) as string;
+  const userId = getCookies(COOKIES.USER_ID) as string;
+
+  if (refreshToken && accessToken && userId) {
+    return true;
+  }
+  return false;
+}
+
+export async function redirectIfUserAlreadyLoggedInAction() {
+  const isAlreadyLoggedIn = await checkUserAlreadyLoggedInAction();
+  if (isAlreadyLoggedIn) navigate('/dashboard');
+}
+

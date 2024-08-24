@@ -6,7 +6,11 @@ export enum API_METHODS {
   DELETE = 'DELETE',
 }
 
+export interface IResponse extends Response {
+  request: Request;
+}
+
 export interface IFetchInterceptor {
-  request: (options: RequestInit) => typeof options;
-  response: (response: Response) => typeof response;
+  request: (options: RequestInit) => Promise<typeof options> | typeof options;
+  response: (response: Response, request: Request) => Promise<typeof response> | typeof response;
 }

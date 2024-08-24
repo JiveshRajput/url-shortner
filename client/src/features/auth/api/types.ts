@@ -19,3 +19,7 @@ export interface IResetPasswordApi {
 export interface ISignOutApi {
   refreshToken: string;
 }
+
+export interface IGetAccesTokenApi {
+  refreshToken: string;
+}

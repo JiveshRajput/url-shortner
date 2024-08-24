@@ -1,26 +1,47 @@
 'use client';
 
+import { navigate } from '@/features/common';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { signInAction } from '../server-actions';
+import { checkUserAlreadyLoggedInAction, signInAction } from '../server-actions';
 
 export const SignInForm = () => {
+  const router: AppRouterInstance = useRouter();
+
   /**
    * This method is used to sign in.
    * @param formData: Formdata includes email and password
    */
   const handleSignIn = async (formData: FormData) => {
     const response = await signInAction(formData);
+
     if (response?.errorMessage) {
       toast.error(response.errorMessage);
     }
 
     if (response?.successMessage) {
       toast.success(response.successMessage);
-      redirect('/dashboard');
+      navigate('/dashboard');
     }
   };
+
+  useEffect(() => {
+    const checkUserAlreadyLoggedIn = async () => {
+      try {
+        const isUserAlreadyLoggedIn = await checkUserAlreadyLoggedInAction();
+        if (isUserAlreadyLoggedIn) {
+          toast.error('Already Signed In!!! Please sign out to sign in again.');
+          router.replace('/dashboard');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    checkUserAlreadyLoggedIn();
+  }, []);
 
   return (
     <div>

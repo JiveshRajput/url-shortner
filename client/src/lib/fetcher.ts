@@ -4,7 +4,7 @@ export class Fetcher {
   public baseUrl: string = '';
 
   // common headers
-  public headers: HeadersInit = {};
+  private headers: HeadersInit = {};
 
   // request & response interceptor
   public interceptor: IFetchInterceptor = {
@@ -29,17 +29,19 @@ export class Fetcher {
       const fullUrl: string = `${this.baseUrl}${url}`;
 
       // request interceptor
-      options = this.interceptor.request({
+      options = await this.interceptor.request({
         ...options,
         headers: { ...this.headers, ...options.headers },
       });
 
+      let request: Request;
       let response: Response;
 
       if (!options && !body) {
-        response = await fetch(fullUrl, { method });
+        request = new Request(fullUrl, { method });
+        response = await fetch(request);
       } else {
-        const resquestBody = {
+        const payload = {
           ...options,
           ...(Object.values(body).length >= 1 || Object.values(options.body as object).length >= 1
             ? { body: JSON.stringify({ ...body, ...(options.body as object) }) }
@@ -47,11 +49,12 @@ export class Fetcher {
           method,
         };
 
-        response = await fetch(fullUrl, resquestBody);
+        request = new Request(fullUrl, payload);
+        response = await fetch(request);
       }
 
       // response interceptor
-      response = this.interceptor.response(response);
+      response = await this.interceptor.response(response, request);
 
       // return the updated response
       return response;
