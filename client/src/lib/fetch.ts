@@ -34,11 +34,15 @@ fetchInstance.interceptor.request = (options) => {
 fetchInstance.interceptor.response = async (response, request) => {
   console.log('response status: ', response.status);
   console.log('response url: ', response.url);
-  if (request.url !== `http://127.0.0.1:5050/app/v1/auth/authenticate`)
+  if (
+    request.url !== `http://127.0.0.1:5050/app/v1/auth/authenticate` ||
+    `http://127.0.0.1:5050/app/v1/auth/get-access-token`
+  )
     console.log('request:', request);
 
   let accessToken = '';
   let isRetry = false; // TODO: Implment isRetry logic
+
   if (response.status === 401) {
     try {
       console.log('INSIDE RESPONSE INTERCEPTOR 401 ERROR');
@@ -47,24 +51,27 @@ fetchInstance.interceptor.response = async (response, request) => {
         console.log('ACCESS TOKEN:', accessToken);
       } catch (error) {
         console.log('GET ACCESS TOKEN ERROR', error);
-        // TODO (bug): Shift it outside the catch block
+      }
+      if (!accessToken) {
         redirect('/sign-in');
       }
-      await createSession(accessToken);
-      console.log('accesstoken new request:', accessToken);
+      // await createSession(accessToken);
+      console.log('accesstoken new request:', getCookies(COOKIES.ACCESS_TOKEN));
 
-      const newRequest: RequestInit = {
+      const requestPayload: RequestInit = {
         headers: {
           'Content-Type': 'application/json',
           ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         },
         ...(request.body ? { body: request.body } : {}),
         method: request.method,
+        // duplex: 'half',
       };
+      const newRequest = new Request(request.url, requestPayload);
 
-      const response = await fetch(request.url, newRequest);
-      // const responseData = await response.json();
-      // console.log('inteceptor responseData', responseData);
+      const response = await fetch(request);
+      const responseData = await response.json();
+      console.log('inteceptor responseData', responseData);
       return response;
     } catch (error) {
       console.error(error);
@@ -74,4 +81,3 @@ fetchInstance.interceptor.response = async (response, request) => {
 };
 
 export { fetchInstance as fetch };
-

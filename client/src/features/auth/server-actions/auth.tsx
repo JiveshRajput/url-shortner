@@ -206,5 +206,13 @@ export async function getAccessTokenByRefreshToken() {
 
   const accessToken: string = accessTokenData?.data?.accessToken as string;
 
+  const saveAccessTokenResult = await fetch('http://127.0.0.1:3000/api/save-accesstoken', {
+    method: 'POST',
+    body: JSON.stringify({ accessToken }),
+  });
+  const saveAccessTokenData = await saveAccessTokenResult.json();
+
+  console.log('saveAccessTokenData:', saveAccessTokenData);
+
   return accessToken;
 }
