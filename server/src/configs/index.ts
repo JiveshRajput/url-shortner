@@ -5,7 +5,7 @@ export * from './initial-app-setup';
 export const BCRYPT_SALT: number = 10;
 export const PORT: PortType = 8080;
 export const EXPIRES_IN_JWT: string = '1h';
-export const EXPIRES_IN_ACCESS_TOKEN: string = '10m';
+export const EXPIRES_IN_ACCESS_TOKEN: string = '1d';
 export const EXPIRES_IN_REFRESH_TOKEN: string = '30d';
 export const PROJEC_NAME: string = 'URL Shortner';
 export const OTP_EXPIRY_MINUTES: number = 5;
