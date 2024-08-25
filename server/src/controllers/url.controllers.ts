@@ -38,15 +38,17 @@ export const createUrlController: RequestHandler = async (
   next: INextFunction,
 ): Promise<void> => {
   try {
-    const { fullUrl } = request.body;
+    const { fullUrl, clicks } = request.body;
+
+    if (clicks) {
+      throw new Error(messages.urlCannotAddClicksWhileCreatingMessage);
+    }
 
     if (!isUrlValid(fullUrl)) {
       throw new Error(messages.urlInvalidMessage);
     }
 
-    const newShortenUrl = await UrlModel.create({
-      fullUrl,
-    });
+    const newShortenUrl = await UrlModel.create(request.body);
 
     response.status(201).json({
       message: messages.urlCreateSuccessMessage,

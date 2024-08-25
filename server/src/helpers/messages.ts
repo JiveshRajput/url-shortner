@@ -13,6 +13,7 @@ export const messages = {
   urlInvalidMessage: 'URL is invalid!!!',
   urlNotExistsMessage: 'URL not exists!!!',
   urlAlreadyExistsMessage: 'URL already exists. Try some different URL!!!',
+  urlCannotAddClicksWhileCreatingMessage: 'Cannot update or add clicks while creating url!!|',
 
   // Auth messages
   loginSuccessfulMessage: 'User logged in successfully!!!',
