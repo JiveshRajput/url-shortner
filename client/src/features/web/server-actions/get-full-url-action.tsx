@@ -1,13 +1,16 @@
 'use server';
 
 import { notFound, redirect } from 'next/navigation';
+import { getFullUrlApi } from '../apis';
 
 export async function getFullUrlAction(shortUrlId: string) {
-  console.log('short url id:', shortUrlId);
+  const response = await getFullUrlApi(shortUrlId);
+  const data = await response.json();
+  const fullUrl: string = data?.data?.fullUrl;
 
-  if (shortUrlId === 'not-found') {
+  if (fullUrl) {
+    redirect(fullUrl);
+  } else {
     notFound();
   }
-
-  redirect('/');
 }

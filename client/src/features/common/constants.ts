@@ -20,4 +20,15 @@ export const API_ROUTE = {
     AUTHENTICATE: `/auth/authenticate`,
     GET_ACCESS_TOKEN: `/auth/get-access-token`,
   },
+  SHORT_URL: {
+    URL: '/url',
+    GET_URL: '/url/',
+    UPDATE_URL: '/url/',
+    DELETE_URL: '/url/',
+    CREATE_URL: '/url',
+  },
+};
+
+export const CACHING_TAGS = {
+  URL: 'url',
 };
