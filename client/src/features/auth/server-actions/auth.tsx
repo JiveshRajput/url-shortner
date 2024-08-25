@@ -187,12 +187,16 @@ export async function checkUserAlreadyLoggedInAction() {
   const accessToken = getCookies(COOKIES.ACCESS_TOKEN) as string;
   const userId = getCookies(COOKIES.USER_ID) as string;
 
-  const response = await authenticateUserApi();
-
-  if (refreshToken && accessToken && userId && response.status === 200) {
-    return true;
+  if (!(refreshToken && accessToken && userId)) {
+    return false;
   }
-  return false;
+
+  const response = await authenticateUserApi();
+  if (response.status !== 200) {
+    return false;
+  }
+  
+  return true;
 }
 
 export async function getAccessTokenByRefreshToken() {

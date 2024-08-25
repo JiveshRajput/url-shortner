@@ -25,6 +25,8 @@ export class Fetcher {
   makeCall =
     (method: API_METHODS) =>
     async (url: string, body: object = {}, options: RequestInit = {}) => {
+      let request: Request, requestClone: Request, response: Response;
+
       // creating full url
       const fullUrl: string = `${this.baseUrl}${url}`;
 
@@ -34,22 +36,26 @@ export class Fetcher {
         headers: { ...this.headers, ...options.headers },
       });
 
-      let request: Request;
-      let requestClone: Request;
-      let response: Response;
+      // if request body is not available assign `object` to it.
+      if (!options.body) {
+        options.body = {} as BodyInit;
+      }
 
       if (!options && !body) {
         request = new Request(fullUrl, { method });
         requestClone = request.clone();
         response = await fetch(request);
       } else {
-        const payload = {
-          ...options,
-          ...(Object.values(body).length >= 1 || Object.values(options.body as object).length >= 1
-            ? { body: JSON.stringify({ ...body, ...(options.body as object) }) }
-            : {}),
+        const { body: optionBody, ...extraOptions } = options;
+        let payload: RequestInit = {
+          ...extraOptions,
           method,
         };
+        const payloadBody: object = getRequestBody(body, optionBody as object);
+
+        if (Object.keys(payloadBody).length >= 1) {
+          payload.body = JSON.stringify(payloadBody);
+        }
 
         request = new Request(fullUrl, payload);
         requestClone = request.clone();
@@ -78,3 +84,12 @@ export class Fetcher {
   // delete call
   delete = this.makeCall(API_METHODS.DELETE);
 }
+
+export const getRequestBody = (body: object, optionsBody: object) => {
+  return Object.values(body).length >= 1 || Object.values(optionsBody).length >= 1
+    ? {
+        ...body,
+        ...(optionsBody ? (optionsBody as object) : {}),
+      }
+    : {};
+};

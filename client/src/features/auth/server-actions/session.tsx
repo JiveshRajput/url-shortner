@@ -37,4 +37,6 @@ export async function updateSession() {
 
 export async function deleteSession() {
   deleteCookies(COOKIES.ACCESS_TOKEN);
+  deleteCookies(COOKIES.REFRESH_TOKEN);
+  deleteCookies(COOKIES.USER_ID);
 }
