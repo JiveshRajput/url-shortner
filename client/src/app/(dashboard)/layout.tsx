@@ -1,7 +1,8 @@
-import React from 'react';
+import { DashboardLayout } from '@/features/dashboard';
+import React, { ReactNode } from 'react';
 
-const DashboardLayout = () => {
-  return <div>dashboard layout</div>;
+const Layout = ({ children }: { children: ReactNode }) => {
+  return <DashboardLayout>{children}</DashboardLayout>;
 };
 
-export default DashboardLayout;
+export default Layout;
