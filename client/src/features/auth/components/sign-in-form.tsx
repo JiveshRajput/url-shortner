@@ -98,6 +98,7 @@ export const SignInForm = () => {
             <Link
               href="/forgot-password"
               className="font-medium text-sky-500 transition hover:text-sky-700 focus:text-sky-700 focus:outline-none"
+              prefetch
             >
               Forgot Password
             </Link>
@@ -110,6 +111,7 @@ export const SignInForm = () => {
           <Link
             href="/sign-up"
             className="font-semibold text-sky-500 transition hover:text-sky-700 focus:text-sky-700 focus:outline-none"
+            prefetch
           >
             Not an user? Sign up
           </Link>

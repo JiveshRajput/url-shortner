@@ -24,7 +24,7 @@ export const Footer = () => {
                   </li>
                 ))}
               </ul>
-              <Link href="/sign-up">
+              <Link href="/sign-up" prefetch>
                 <TranslucentButton>Sign Up</TranslucentButton>
               </Link>
             </div>

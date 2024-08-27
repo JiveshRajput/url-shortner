@@ -70,7 +70,7 @@ export const Header = () => {
         </nav>
 
         {/* Contact Us Button */}
-        <Link href="/sign-in" passHref className="rounded-lg">
+        <Link href="/sign-in" className="rounded-lg" prefetch>
           <FilledButton>Sign in</FilledButton>
         </Link>
       </div>

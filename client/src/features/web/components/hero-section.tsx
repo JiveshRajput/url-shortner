@@ -25,6 +25,7 @@ export const HeroSection = () => {
                 <Link
                   href="/dashboard"
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-500"
+                  prefetch
                 >
                   👉
                 </Link>

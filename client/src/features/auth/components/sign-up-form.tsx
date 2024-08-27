@@ -115,6 +115,7 @@ export const SignUpForm = () => {
           <Link
             href="/sign-in"
             className="font-semibold text-sky-500 transition hover:text-sky-700 focus:text-sky-700 focus:outline-none"
+            prefetch
           >
             Already an user? Sign in
           </Link>
