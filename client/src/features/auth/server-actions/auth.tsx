@@ -2,7 +2,7 @@
 
 import { REFRESH_TOKEN_EXPIRY } from '@/features/common';
 import { IStatus } from '@/types';
-import { getCookies, setCookies } from '@/utils';
+import { deleteCookies, getCookies, setCookies } from '@/utils';
 import {
   authenticateUserApi,
   getAccessTokenApi,
@@ -15,6 +15,7 @@ import {
 } from '../api';
 import { COOKIES } from '../constants';
 import { createSession } from './session';
+import { redirect } from 'next/navigation';
 
 export async function signInAction(formData: FormData) {
   try {
@@ -195,7 +196,7 @@ export async function checkUserAlreadyLoggedInAction() {
   if (response.status !== 200) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -211,4 +212,13 @@ export async function getAccessTokenByRefreshToken() {
   const accessToken: string = accessTokenData?.data?.accessToken as string;
 
   return accessToken;
+}
+
+export async function signOutAction() {
+  // TODO: Implement logout api
+
+  deleteCookies(COOKIES.REFRESH_TOKEN);
+  deleteCookies(COOKIES.ACCESS_TOKEN);
+  deleteCookies(COOKIES.USER_ID);
+  redirect('/sign-in');
 }
