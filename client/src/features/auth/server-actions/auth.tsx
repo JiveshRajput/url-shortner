@@ -27,9 +27,9 @@ export async function signInAction(formData: FormData) {
     const result = await signInApi(payload);
     const data = await result.json();
 
-      if (data.status === IStatus.FAIL) {
-        throw new Error(data?.message);
-      }
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
 
     const { accessToken, refreshToken } = data;
 
@@ -56,7 +56,7 @@ export async function signInAction(formData: FormData) {
       successMessage: data?.message,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
@@ -107,7 +107,7 @@ export async function signUpAction(formData: FormData) {
       successMessage: otpData?.message,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
@@ -129,7 +129,7 @@ export async function verifyOtpAction(formData: FormData) {
       successMessage: data?.message,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
@@ -154,7 +154,7 @@ export async function forgotPasswordAction(formData: FormData) {
       email: payload.email,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
@@ -178,7 +178,7 @@ export async function resetPasswordAction(formData: FormData) {
       successMessage: data?.message,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
@@ -207,7 +207,7 @@ export async function getAccessTokenByRefreshToken() {
 
   const accessTokenData: any = await accessTokenResponse.json();
 
-  console.log('accessTokenData:', accessTokenData);
+  console.log('ACCESS TOKEN DATA:', accessTokenData);
 
   const accessToken: string = accessTokenData?.data?.accessToken as string;
 

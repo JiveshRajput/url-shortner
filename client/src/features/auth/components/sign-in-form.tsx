@@ -37,7 +37,7 @@ export const SignInForm = () => {
           router.replace('/dashboard');
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     checkUserAlreadyLoggedIn();

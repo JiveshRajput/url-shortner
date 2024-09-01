@@ -27,9 +27,9 @@ fetchInstance.interceptor.request = (options) => {
 };
 
 fetchInstance.interceptor.response = async (response) => {
-  console.log('response status: ', response.status);
-  console.log('response url: ', response.url);
+  console.log('response:', response.status, response.url);
 
+  // TODO: logic when user is unauthorized
   if (response.status === 401) {
   }
   return response;

@@ -1,5 +1,7 @@
+import { DashboardAddUrlScreen } from '@/features/dashboard';
+
 const DashboardAddPage = () => {
-  return <div>dashboard add page</div>;
+  return <DashboardAddUrlScreen />;
 };
 
 export default DashboardAddPage;

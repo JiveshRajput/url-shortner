@@ -25,13 +25,15 @@ export const DashboardLayout = ({
   return (
     <main>
       <div className="relative flex h-[100dvh] bg-slate-50">
+        {/* sidebar */}
         <aside
-          className={`flex h-[100dvh] w-64 flex-col bg-gradient-to-tr from-sky-600 to-sky-400 text-white transition-[left] max-md:absolute max-md:top-0 ${sidebarOpen ? 'max-md:left-0' : 'max-md:-left-64'}`}
+          className={`flex h-[100dvh] w-64 flex-col bg-gradient-to-tr from-sky-600 to-sky-400 text-white transition-[left] max-lg:w-[5.4rem] max-md:absolute max-md:top-0 max-md:w-64 ${sidebarOpen ? 'max-md:left-0' : 'max-md:-left-64'}`}
         >
           {/* logo */}
           <div className="flex h-16 items-center justify-center">
             <Link href="/dashboard" className="text-xl font-bold">
-              QuickURL
+              <div className="hidden max-lg:block max-md:hidden">QU</div>
+              <div className="max-lg:hidden max-md:block">QuickURL</div>
             </Link>
           </div>
           {/* nav */}
@@ -41,12 +43,13 @@ export const DashboardLayout = ({
                 <Link
                   key={title}
                   href={link}
+                  title={title}
                   className={`mb-2 flex items-center rounded-lg px-4 py-3 transition hover:bg-white hover:text-sky-600 ${link === path ? 'bg-white text-sky-600' : 'text-white'}`}
                 >
-                  <div className="mr-2">
+                  <div className="mr-2" title={title}>
                     <Icon className="text-2xl" />
                   </div>
-                  {title}
+                  <p className="max-lg:hidden max-md:block">{title}</p>
                 </Link>
               ))}
             </nav>
@@ -98,7 +101,7 @@ export const DashboardLayout = ({
             </div>
           </header>
           {/* main */}
-          <main className="p-4">{children}</main>
+          <main className="h-[calc(100dvh-4rem)] p-4 overflow-auto">{children}</main>
         </div>
       </div>
     </main>

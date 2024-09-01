@@ -31,7 +31,7 @@ export async function getUserDetailsAction() {
       data: data.data,
     };
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     return { errorMessage: String(error?.message) };
   }
 }
