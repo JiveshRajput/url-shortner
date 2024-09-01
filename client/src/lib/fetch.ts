@@ -22,6 +22,7 @@ fetchInstance.interceptor.request = (options) => {
   if (userId) {
     options.body = (userId ? { userId } : {}) as BodyInit;
   }
+
   return options;
 };
 

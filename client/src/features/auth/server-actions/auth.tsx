@@ -27,9 +27,9 @@ export async function signInAction(formData: FormData) {
     const result = await signInApi(payload);
     const data = await result.json();
 
-    if (data.status === IStatus.FAIL) {
-      throw new Error(data?.message);
-    }
+      if (data.status === IStatus.FAIL) {
+        throw new Error(data?.message);
+      }
 
     const { accessToken, refreshToken } = data;
 

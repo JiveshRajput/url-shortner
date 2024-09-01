@@ -1,19 +1,26 @@
 'use client';
 
-import Link from 'next/link';
-import React, { ReactNode, useState } from 'react';
-import { DASHBOARD_NAVIGATION } from '../constants';
-import { usePathname } from 'next/navigation';
-import { HiOutlineLogout } from 'react-icons/hi';
-import { RxHamburgerMenu } from 'react-icons/rx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { signOutAction } from '@/features/auth/server-actions';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ReactNode, useState } from 'react';
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { DASHBOARD_NAVIGATION } from '../constants';
+import { IUser } from '@/features/common';
 
-export const DashboardLayout = ({ children }: { children: ReactNode }) => {
+export const DashboardLayout = ({
+  children,
+  data,
+}: {
+  children: ReactNode;
+  data: IUser | undefined;
+}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const path = usePathname();
+  const { name = '', email = '' } = data || {};
 
   return (
     <main>
@@ -58,20 +65,27 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
               <Popover>
                 <PopoverTrigger>
                   <Avatar className="cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src="" />
+                    <AvatarFallback>
+                      {name
+                        .split(' ')
+                        .map((word) => word[0].toUpperCase())
+                        .join('')}
+                    </AvatarFallback>
                   </Avatar>
                 </PopoverTrigger>
-                <PopoverContent align="end" className='w-auto'>
+                <PopoverContent align="end" className="w-auto">
                   <div className="mb-1 flex items-center gap-2">
                     <div className="font-semibold">User : </div>
-                    <div>{`{{NAME HERE}}`}</div>
+                    <div>{name}</div>
                   </div>
                   <div className="mb-4 flex items-center gap-2">
                     <div className="font-semibold">Email : </div>
-                    <div>{`{{EMAIL HERE}}`}</div>
+                    <div>{email}</div>
                   </div>
-                  <Button className='w-full' onClick={()=> signOutAction()}>Logout</Button>
+                  <Button className="w-full" onClick={() => signOutAction()}>
+                    Logout
+                  </Button>
                 </PopoverContent>
               </Popover>
 

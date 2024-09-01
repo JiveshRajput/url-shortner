@@ -53,7 +53,7 @@ export class Fetcher {
         };
         const payloadBody: object = getRequestBody(body, optionBody as object);
 
-        if (Object.keys(payloadBody).length >= 1) {
+        if (Object.keys(payloadBody).length >= 1 && method !== API_METHODS.GET) {
           payload.body = JSON.stringify(payloadBody);
         }
 

@@ -20,6 +20,9 @@ export const API_ROUTE = {
     AUTHENTICATE: `/auth/authenticate`,
     GET_ACCESS_TOKEN: `/auth/get-access-token`,
   },
+  COMMON: {
+    GET_USER_BY_ID: `/auth`,
+  },
   SHORT_URL: {
     URL: '/url',
     GET_URL: '/url/',
