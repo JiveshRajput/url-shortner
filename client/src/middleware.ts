@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     const response = await authenticateUserApi();
     const data = await response.json();
 
-    if (data.statusCode !== 200) {
+    if (data.statusCode === 401) {
       const response = NextResponse.redirect(new URL('/sign-in', request.url));
       response.cookies.delete(COOKIES.ACCESS_TOKEN);
       response.cookies.delete(COOKIES.REFRESH_TOKEN);
