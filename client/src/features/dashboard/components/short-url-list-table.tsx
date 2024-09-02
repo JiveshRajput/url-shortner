@@ -1,13 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { IShortUrl } from '@/features/common';
 import { ShortUrlListTableRow } from './short-url-list-table-row';
 
@@ -57,11 +51,11 @@ export const ShortUrlData: IShortUrl[] = [
   },
 ];
 
-export const ShortUrlListTable = () => {
+export const ShortUrlListTable = ({ data, title='' }: { data: IShortUrl[], title: string }) => {
   return (
     <Card>
       <CardHeader className="px-7">
-        <CardTitle>Your Links 🔗</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -73,7 +67,7 @@ export const ShortUrlListTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {ShortUrlData.map((url) => (
+            {data.map((url) => (
               <ShortUrlListTableRow url={url} key={url.shortUrl} />
             ))}
           </TableBody>

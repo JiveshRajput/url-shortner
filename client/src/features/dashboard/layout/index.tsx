@@ -72,7 +72,7 @@ export const DashboardLayout = ({
                     <AvatarFallback>
                       {name
                         .split(' ')
-                        .map((word) => word[0].toUpperCase())
+                        .map((word) => word[0]?.toUpperCase())
                         .join('')}
                     </AvatarFallback>
                   </Avatar>

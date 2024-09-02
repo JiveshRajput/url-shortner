@@ -27,6 +27,7 @@ export const API_ROUTE = {
   SHORT_URL: {
     URL: '/url',
     GET_URL: '/url/',
+    GET_ALL_URL: '/url/all',
     UPDATE_URL: '/url/',
     DELETE_URL: '/url/',
     CREATE_URL: '/url',
@@ -35,4 +36,5 @@ export const API_ROUTE = {
 
 export const CACHING_TAGS = {
   URL: 'url',
+  USER: 'user',
 };

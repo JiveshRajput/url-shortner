@@ -5,8 +5,8 @@ import { ICreateFullUrlApi, IUpdateFullUrlApi } from './types';
 export const getFullUrlApi = async (id: string) => {
   return fetch.get(
     `${API_ROUTE.SHORT_URL.GET_URL}${id}`,
-    {},
-    { next: { tags: [CACHING_TAGS.URL, id] }, cache: 'force-cache' },
+    // {},
+    // { next: { tags: [CACHING_TAGS.URL, id] }, cache: 'force-cache' },
   );
 };
 
