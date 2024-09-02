@@ -1,5 +1,8 @@
 export const WEBSITE_NAME: string = 'QuickURL';
-export const BACKEND_API_URL: string = 'http://127.0.0.1:5050/app/v1';
+export const BACKEND_API_URL: string =
+  process.env.NODE_ENV === 'production'
+    ? 'http://13.60.240.102:5050/app/v1'
+    : 'http://127.0.0.1:5050/app/v1';
 export const WEBSITE_URL: string = 'http://127.0.0.1:3000';
 export const SECOND: number = 1000;
 export const MINUTE: number = 60 * SECOND;
