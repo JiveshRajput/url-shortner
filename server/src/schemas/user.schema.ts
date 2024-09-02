@@ -37,6 +37,10 @@ export const userSchema = new Schema(
       required: [true, 'Role required'],
       default: 'USER',
     },
+    urls: {
+      type: [Schema.Types.ObjectId],
+      default: [],
+    },
   },
   { timestamps: true },
 );

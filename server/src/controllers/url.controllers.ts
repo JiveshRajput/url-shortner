@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
-import { messages } from '../helpers';
-import { UrlModel } from '../models';
-import { INextFunction, IRequest, IResponse } from '../types';
-import { isUrlValid } from '../validators';
+import { CreateError, CreateResponse, messages } from '../helpers';
+import { UrlModel, UserModel } from '../models';
+import { INextFunction, IRequest, IResponse, IResponseSuccess } from '../types';
+import { isUrlValid, sameUserValidator } from '../validators';
 
 export const getUrlController: RequestHandler = async (
   request: IRequest,
@@ -20,15 +20,16 @@ export const getUrlController: RequestHandler = async (
     data.clicks += 1;
     await data.save();
 
-    response.status(200).json({
-      message: messages.urlFetchSuccessMessage,
-      data,
-    });
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlFetchSuccessMessage,
+      {
+        data,
+      },
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next({
-      statusCode: 401,
-      message: error?.message || messages.urlFetchErrorMessage,
-    });
+    next(CreateError.clientError(error?.message || messages.urlFetchErrorMessage));
   }
 };
 
@@ -38,7 +39,13 @@ export const createUrlController: RequestHandler = async (
   next: INextFunction,
 ): Promise<void> => {
   try {
-    const { fullUrl, clicks } = request.body;
+    const { fullUrl, clicks, userId } = request.body;
+
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
 
     if (clicks) {
       throw new Error(messages.urlCannotAddClicksWhileCreatingMessage);
@@ -50,15 +57,20 @@ export const createUrlController: RequestHandler = async (
 
     const newShortenUrl = await UrlModel.create(request.body);
 
-    response.status(201).json({
-      message: messages.urlCreateSuccessMessage,
-      data: newShortenUrl,
-    });
+    await UserModel.updateOne({ _id: userId }, { $push: { urls: newShortenUrl._id } });
+
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlCreateSuccessMessage,
+      {
+        data: newShortenUrl,
+      },
+      201,
+    );
+
+    response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next({
-      statusCode: 401,
-      message: error?.message || messages.urlCreateErrorMessage,
-    });
+    next(CreateError.clientError(error?.message || messages.urlCreateErrorMessage));
   }
 };
 
@@ -69,7 +81,13 @@ export const updateUrlController: RequestHandler = async (
 ): Promise<void> => {
   try {
     const { uniqueId } = request.params;
-    const { fullUrl, shortUrl, clicks } = request.body;
+    const { fullUrl, shortUrl, clicks, userId } = request.body;
+
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
 
     const data = await UrlModel.findOne({ shortUrl: uniqueId });
     if (!data) {
@@ -97,15 +115,14 @@ export const updateUrlController: RequestHandler = async (
 
     await data.save();
 
-    response.status(200).json({
-      message: messages.urlUpdateSuccessMessage,
-      data,
-    });
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlUpdateSuccessMessage,
+    );
+
+    response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next({
-      statusCode: 400,
-      message: error?.message || messages.urlUpdateErrorMessage,
-    });
+    next(CreateError.clientError(error?.message || messages.urlUpdateErrorMessage));
   }
 };
 
@@ -116,6 +133,13 @@ export const deleteUrlController: RequestHandler = async (
 ): Promise<void> => {
   try {
     const { uniqueId } = request.params;
+    const { userId } = request.body;
+
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
 
     const data = await UrlModel.findOne({ shortUrl: uniqueId });
     if (!data) {
@@ -124,13 +148,50 @@ export const deleteUrlController: RequestHandler = async (
 
     await data.deleteOne();
 
-    response.status(200).json({
-      message: messages.urlDeleteSuccessMessage,
-    });
+    await UserModel.updateOne({ _id: userId }, { $pull: { urls: data._id } });
+
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlDeleteSuccessMessage,
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
   } catch (error: any) {
-    next({
-      statusCode: 400,
-      message: error?.message || messages.urlDeleteErrorMessage,
-    });
+    next(CreateError.clientError(error?.message || messages.urlDeleteErrorMessage));
+  }
+};
+
+export const getAllUrlController: RequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { userId } = request.params;
+
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
+
+    const userData = await UserModel.aggregate([
+      {
+        $match: { _id: user._id },
+      },
+      {
+        $lookup: { from: 'url', as: 'urls', localField: 'urls', foreignField: '_id' },
+      },
+    ]);
+
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlFetchSuccessMessage,
+      {
+        data: userData[0]?.urls,
+      },
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.urlFetchErrorMessage));
   }
 };

@@ -4,10 +4,17 @@ import { authMiddlewares } from '../middlewares';
 
 const urlRoutes = Router();
 const { verifyTokenMiddleware } = authMiddlewares;
-const { getUrlController, createUrlController, updateUrlController, deleteUrlController } =
-  urlControllers;
+const {
+  getUrlController,
+  getAllUrlController,
+  createUrlController,
+  updateUrlController,
+  deleteUrlController,
+} = urlControllers;
 
 urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
+
+urlRoutes.route('/all/:userId').get(verifyTokenMiddleware, getAllUrlController);
 
 urlRoutes
   .route('/:uniqueId')
