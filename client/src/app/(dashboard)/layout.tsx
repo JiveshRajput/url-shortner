@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: 'Dashboard | QuickURL',
 };
 
+export const dynamic = 'force-dynamic';
+
 const Layout = async ({ children }: { children: ReactNode }) => {
   const result = await getUserDetailsAction();
 
