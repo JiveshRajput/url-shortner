@@ -41,7 +41,7 @@ export const SignInForm = () => {
       }
     };
     checkUserAlreadyLoggedIn();
-  }, []);
+  }, [router]);
 
   return (
     <div>

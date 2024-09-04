@@ -21,7 +21,7 @@ export const DashboardLayout = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const path = usePathname();
   const { name = '', email = '' } = data || {};
-
+  
   return (
     <main>
       <div className="relative flex h-[100dvh] bg-slate-50">
