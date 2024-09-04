@@ -5,7 +5,10 @@ import { COOKIES } from './features/auth/constants';
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/dashboard/:path*', '/verify-otp'],
+  matcher: [
+    // '/dashboard/:path*', 
+    '/verify-otp'
+  ],
 };
 
 
