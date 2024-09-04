@@ -84,6 +84,7 @@ export const SignInForm = () => {
             className="mb-4 w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
             type="email"
             name="email"
+            autoComplete="email"
             placeholder="Email"
             required
           />
@@ -91,6 +92,7 @@ export const SignInForm = () => {
             className="mb-1 w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
             type="password"
             name="password"
+            autoComplete="current-password"
             placeholder="Password"
             required
           />
