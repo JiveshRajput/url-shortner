@@ -12,7 +12,6 @@ export const dynamic = 'force-dynamic';
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const result = await getUserDetailsAction();
-  console.log('result:', result)
 
   if (result.errorMessage && !result.data) {
     console.log('inside redirect sign in dashboard')

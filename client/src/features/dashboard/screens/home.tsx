@@ -3,16 +3,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShortUrlListTable } from '../components';
 import { getDashboardCardDetails } from '../constants';
-import { getAllUrlAction } from '../server-actions';
+import { getUrlStatsAction } from '../server-actions';
 
 export const DashboardHomeScreen = async () => {
-  const result = await getAllUrlAction();
+  const result = await getUrlStatsAction();
 
   return (
     <div>
-      <h1 className="mb-6 text-3xl font-semibold max-md:mb-4">Welcome to your dashboard!</h1>
+      <h1 className="mb-6 text-3xl font-semibold max-md:mb-4 max-md:text-xl">
+        Welcome to your dashboard!
+      </h1>
       <div className="mb-6 grid gap-4 max-md:mb-4 md:grid-cols-2 lg:grid-cols-4">
-        {getDashboardCardDetails(result.data || []).map(({ description, title, value, Icon }) => (
+        {getDashboardCardDetails(result.data).map(({ description, title, value, Icon }) => (
           <Card key={title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{title}</CardTitle>
@@ -27,7 +29,7 @@ export const DashboardHomeScreen = async () => {
       </div>
 
       {/* Table */}
-      <ShortUrlListTable data={result.data || []} title={'Recent Links 🔗'} />
+      <ShortUrlListTable data={result.data?.recentLinks || []} title={'Recent Links 🔗'} />
     </div>
   );
 };

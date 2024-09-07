@@ -1,5 +1,6 @@
 export const WEBSITE_NAME: string = 'QuickURL';
 export const BACKEND_API_URL: string = 'http://13.60.240.102:5050/app/v1';
+// export const BACKEND_API_URL: string = 'http://127.0.0.1:5050/app/v1';
 // export const BACKEND_API_URL: string =
 //   process.env.NODE_ENV === 'production'
 //     ? 'http://13.60.240.102:5050/app/v1'
@@ -32,6 +33,7 @@ export const API_ROUTE = {
     URL: '/url',
     GET_URL: '/url/',
     GET_ALL_URL: '/url/all',
+    GET_URL_STATS: '/url/stats',
     UPDATE_URL: '/url/',
     DELETE_URL: '/url/',
     CREATE_URL: '/url',
@@ -41,4 +43,6 @@ export const API_ROUTE = {
 export const CACHING_TAGS = {
   URL: 'url',
   USER: 'user',
+  URL_STATS: 'url-stats',
+  DASHBOARD: '/dashboard',
 };

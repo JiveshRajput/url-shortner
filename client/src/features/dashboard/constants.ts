@@ -5,6 +5,7 @@ import { MdLink, MdLinkOff, MdOutlineLink } from 'react-icons/md';
 import { BsGraphUp } from 'react-icons/bs';
 import { ImTable2 } from 'react-icons/im';
 import { CgProfile } from 'react-icons/cg';
+import { IUrlStats } from './apis/types';
 
 export const DASHBOARD_NAVIGATION = [
   {
@@ -29,29 +30,29 @@ export const DASHBOARD_NAVIGATION = [
   },
 ];
 
-export const getDashboardCardDetails = (data: IShortUrl[]) => {
+export const getDashboardCardDetails = (data: IUrlStats | undefined) => {
   return [
     {
       title: 'Total Links',
-      value: data?.length || 0,
+      value: data?.totalLinks || 0,
       description: 'Total all links',
       Icon: MdOutlineLink,
     },
     {
       title: 'Total Clicks',
-      value: data?.reduce((prev, { clicks }) => prev + clicks, 0) || 0,
+      value: data?.totalClicks || 0,
       description: 'Total clicks of all link',
       Icon: BsGraphUp,
     },
     {
       title: 'Active Links',
-      value: data?.filter(({ isActive }) => isActive)?.length || 0,
+      value: data?.activeLinks || 0,
       description: 'All active links',
       Icon: MdLink,
     },
     {
       title: 'Inactive Links',
-      value: data?.filter(({ isActive }) => !isActive)?.length || 0,
+      value: data?.inActiveLinks || 0,
       description: 'All inactive links',
       Icon: MdLinkOff,
     },

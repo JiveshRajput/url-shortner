@@ -24,6 +24,8 @@ export async function signInAction(formData: FormData) {
       password: formData.get('password') as string,
     };
 
+    payload.email = payload.email.toLowerCase();
+
     const result = await signInApi(payload);
     const data = await result.json();
 

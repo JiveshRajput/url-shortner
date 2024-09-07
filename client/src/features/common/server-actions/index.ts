@@ -26,13 +26,10 @@ export async function getUserDetailsAction() {
       throw new Error(data?.message);
     }
 
-    console.log('get user details data:', data)
-    
     return {
       successMessage: data?.message,
       data: data.data,
     };
-
   } catch (error: any) {
     console.error('inside error');
     console.error(error);
