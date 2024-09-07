@@ -31,3 +31,12 @@ export interface IRefreshToken extends Document {
 }
 
 export interface IRefreshTokenModel extends Model<IRefreshToken> {}
+
+export interface IUrl extends Document {
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
+  fullUrl: string;
+  shortUrl: string;
+  clicks: number;
+  isActive?: boolean | undefined;
+}

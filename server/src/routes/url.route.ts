@@ -10,11 +10,13 @@ const {
   createUrlController,
   updateUrlController,
   deleteUrlController,
+  getUrlStatsController,
 } = urlControllers;
 
 urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
 
 urlRoutes.route('/all/:userId').get(verifyTokenMiddleware, getAllUrlController);
+urlRoutes.route('/stats/:userId').get(verifyTokenMiddleware, getUrlStatsController);
 
 urlRoutes
   .route('/:uniqueId')

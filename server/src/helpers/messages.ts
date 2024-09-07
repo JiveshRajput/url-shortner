@@ -12,7 +12,7 @@ export const messages = {
   dataNotFoundMessage: 'Data not found!!!',
   urlInvalidMessage: 'URL is invalid!!!',
   urlNotExistsMessage: 'URL not exists!!!',
-  urlAlreadyExistsMessage: 'URL already exists. Try some different URL!!!',
+  urlAlreadyExistsMessage: 'Short Id already exists. Try some different Id!!!',
   urlCannotAddClicksWhileCreatingMessage: 'Cannot update or add clicks while creating url!!|',
 
   // Auth messages

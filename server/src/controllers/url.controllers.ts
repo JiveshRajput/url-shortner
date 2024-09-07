@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { CreateError, CreateResponse, messages } from '../helpers';
 import { UrlModel, UserModel } from '../models';
-import { INextFunction, IRequest, IResponse, IResponseSuccess } from '../types';
+import { INextFunction, IRequest, IResponse, IResponseSuccess, IUrl } from '../types';
 import { isUrlValid, sameUserValidator } from '../validators';
 
 export const getUrlController: RequestHandler = async (
@@ -39,7 +39,7 @@ export const createUrlController: RequestHandler = async (
   next: INextFunction,
 ): Promise<void> => {
   try {
-    const { fullUrl, clicks, userId } = request.body;
+    const { fullUrl, shortUrl, clicks, userId } = request.body;
 
     // checking if jwt userId and current userId is same or not
     const user = sameUserValidator(request, userId, next);
@@ -53,6 +53,13 @@ export const createUrlController: RequestHandler = async (
 
     if (!isUrlValid(fullUrl)) {
       throw new Error(messages.urlInvalidMessage);
+    }
+
+    if (shortUrl) {
+      const isAlreadyExists = await UrlModel.findOne({ shortUrl });
+      if (isAlreadyExists) {
+        throw new Error(messages.urlAlreadyExistsMessage);
+      }
     }
 
     const newShortenUrl = await UrlModel.create(request.body);
@@ -188,6 +195,52 @@ export const getAllUrlController: RequestHandler = async (
       messages.urlFetchSuccessMessage,
       {
         data: userData[0]?.urls,
+      },
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.urlFetchErrorMessage));
+  }
+};
+
+export const getUrlStatsController: RequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { userId } = request.params;
+
+    // checking if jwt userId and current userId is same or not
+    const user = sameUserValidator(request, userId, next);
+    if (!user) {
+      throw new Error(messages.accessDeniedMessage);
+    }
+
+    const userData = await UserModel.aggregate([
+      {
+        $match: { _id: user._id },
+      },
+      {
+        $lookup: { from: 'url', as: 'urls', localField: 'urls', foreignField: '_id' },
+      },
+    ]);
+
+    const userUrls: IUrl[] = userData[0]?.urls;
+
+    const data = {
+      totalLinks: userUrls.length,
+      activeLinks: userUrls?.filter(({ isActive }) => isActive)?.length || 0,
+      inActiveLinks: userUrls?.filter(({ isActive }) => !isActive)?.length || 0,
+      totalClicks: userUrls?.reduce((prev, { clicks }) => prev + clicks, 0) || 0,
+      recentLinks: userUrls.slice(0, 5),
+    };
+
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlFetchSuccessMessage,
+      {
+        data,
       },
     );
     response.status(responseMessage.statusCode).json(responseMessage);
