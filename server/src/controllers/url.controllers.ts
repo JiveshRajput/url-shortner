@@ -233,7 +233,7 @@ export const getUrlStatsController: RequestHandler = async (
       activeLinks: userUrls?.filter(({ isActive }) => isActive)?.length || 0,
       inActiveLinks: userUrls?.filter(({ isActive }) => !isActive)?.length || 0,
       totalClicks: userUrls?.reduce((prev, { clicks }) => prev + clicks, 0) || 0,
-      recentLinks: userUrls.slice(0, 5),
+      recentLinks: userUrls.reverse().slice(0, 5),
     };
 
     // Sending success response
