@@ -10,9 +10,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { IShortUrl, IShortUrlTableHeader } from '@/features/common';
-import { ShortUrlListTableRow } from './short-url-list-table-row';
+import { AdvancedAllLinksTableRow } from './advanced-all-links-table-row';
 
-export const DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
+const ADVANCED_DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
   {
     title: 'Short Link',
   },
@@ -31,12 +31,15 @@ export const DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
   {
     title: 'Created At',
   },
+  {
+    title: 'Actions',
+  },
 ];
 
-export const ShortUrlListTable = ({
+export const AdvancedAllLinksTable = ({
   data,
   title = '',
-  header = DASHBOARD_URL_SHORTENER_TABLE_HEADER,
+  header = ADVANCED_DASHBOARD_URL_SHORTENER_TABLE_HEADER,
 }: {
   data: IShortUrl[];
   title?: string;
@@ -60,7 +63,7 @@ export const ShortUrlListTable = ({
           </TableHeader>
           <TableBody>
             {data.map((url) => (
-              <ShortUrlListTableRow url={url} key={url._id} />
+              <AdvancedAllLinksTableRow url={url} key={url._id} />
             ))}
             {data.length === 0 ? (
               <TableRow>

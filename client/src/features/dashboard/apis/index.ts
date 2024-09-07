@@ -3,7 +3,11 @@ import { fetch } from '@/lib/fetch';
 import { ICreateShortUrlApiPayload } from './types';
 
 export const getAllUrlsApi = async (userId: string) => {
-  return fetch.get(`${API_ROUTE.SHORT_URL.GET_ALL_URL}/${userId}`);
+  return fetch.get(
+    `${API_ROUTE.SHORT_URL.GET_ALL_URL}/${userId}`,
+    {},
+    { next: { tags: [CACHING_TAGS.USER_ALL_URL] } },
+  );
 };
 
 export const getUrlStatsApi = async (userId: string) => {
@@ -16,4 +20,8 @@ export const getUrlStatsApi = async (userId: string) => {
 
 export const createShortUrlsApi = async (payload: ICreateShortUrlApiPayload) => {
   return fetch.post(API_ROUTE.SHORT_URL.CREATE_URL, payload);
+};
+
+export const deleteShortUrlApi = async (shortUrlId: string) => {
+  return fetch.delete(`${API_ROUTE.SHORT_URL.DELETE_URL}/${shortUrlId}`);
 };

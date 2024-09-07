@@ -9,16 +9,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { EUrlStatus, IShortUrl, useCopyToClipboard, WEBSITE_URL } from '@/features/common';
 import { cn } from '@/lib/utils';
 import { formatDateAndTime } from '@/utils/formatters';
 import Link from 'next/link';
 import { MutableRefObject, useRef } from 'react';
+import { BsThreeDots } from 'react-icons/bs';
 import { MdOutlineContentCopy, MdOutlineFileDownload, MdQrCode2 } from 'react-icons/md';
 import { QRCode } from 'react-qrcode-logo';
+import { toast } from 'sonner';
+import { deleteShortUrlAction } from '../server-actions';
 
-export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
+export const AdvancedAllLinksTableRow = ({ url }: { url: IShortUrl }) => {
   const qrCodeRef = useRef<QRCode>();
   const [copiedText, setCopyText] = useCopyToClipboard();
 
@@ -27,6 +36,22 @@ export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
   const shortUrlFullLink: string = `${window.location.origin || WEBSITE_URL}/${shortUrl}`;
 
   const downloadShortUrlQrCode = () => qrCodeRef.current?.download('png', `${shortUrl}-short-link`);
+
+  /**
+   * This method is used to delete short url.
+   * @param shortUrlId: short url id is id of link
+   */
+  const handleDeleteShortUrl = async (shortUrlId: string) => {
+    const response = await deleteShortUrlAction(shortUrlId);
+
+    if (response?.errorMessage) {
+      toast.error(response.errorMessage);
+    }
+
+    if (response?.successMessage) {
+      toast.success(response.successMessage);
+    }
+  };
 
   return (
     <TableRow>
@@ -73,6 +98,21 @@ export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
         </Badge>
       </TableCell>
       <TableCell>{formatDateAndTime(createdAt)}</TableCell>
+      <TableCell>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="ghost" size="icon">
+              <BsThreeDots />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Update</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDeleteShortUrl(shortUrl)}>
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TableCell>
     </TableRow>
   );
 };

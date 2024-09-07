@@ -1,3 +1,7 @@
+export interface IShortUrlTableHeader {
+  title: string;
+}
+
 export interface IShortUrl {
   _id: string;
   fullUrl: string;
