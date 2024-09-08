@@ -15,12 +15,12 @@ export const config = {
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest, context: NextFetchEvent) {
-  // console.log('middleware starts');
-
+  console.log('middleware starts');
+  // context.waitUntil()
   try {
     const response = await authenticateUserApi();
     const data = await response.json();
-    // console.log('middleware authenticate user', data);
+    console.log('middleware authenticate user', data);
 
     if (data.statusCode === 401) {
       const response = NextResponse.redirect(new URL('/sign-in', request.url));
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest, context: NextFetchEvent) 
       response.cookies.delete(COOKIES.USER_ID);
       return response;
     }
-    // console.log('middleware ends');
+    console.log('middleware ends');
     return NextResponse.next();
   } catch (error) {
     const response = NextResponse.redirect(new URL('/sign-in', request.url));
