@@ -3,7 +3,14 @@
 import { COOKIES } from '@/features/auth/constants';
 import { IStatus } from '@/types';
 import { getCookies } from '@/utils';
-import { createShortUrlsApi, deleteShortUrlApi, getAllUrlsApi, getUrlStatsApi } from '../apis';
+import {
+  createShortUrlsApi,
+  deleteShortUrlApi,
+  getAllUrlsApi,
+  getShortUrlApi,
+  getUrlStatsApi,
+  updateShortUrlsApi,
+} from '../apis';
 import {
   ICreateShortUrlApi,
   ICreateShortUrlApiPayload,
@@ -61,14 +68,13 @@ export async function getAllUrlAction() {
   }
 }
 
-export async function createShortUrlAction(formData: FormData) {
+export async function createShortUrlAction(formData: ICreateShortUrlApiPayload) {
   try {
-    const isActive = (formData.get('isActive') as string) === 'on' ? true : false;
-    const shortUrl: string = formData.get('shortUrl') as string;
+    const shortUrl: string | undefined = formData.shortUrl;
 
     const payload: ICreateShortUrlApiPayload = {
-      fullUrl: formData.get('fullUrl') as string,
-      isActive,
+      fullUrl: formData.fullUrl,
+      isActive: formData.isActive,
     };
 
     if (shortUrl) {
@@ -77,7 +83,60 @@ export async function createShortUrlAction(formData: FormData) {
 
     const response: any = await createShortUrlsApi(payload);
     const data: ICreateShortUrlApi = await response.json();
-    console.log('data', data);
+
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
+
+    return {
+      successMessage: data?.message,
+      data: data.data,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return { errorMessage: String(error?.message) };
+  }
+}
+
+export async function updateShortUrlAction(
+  shortUrlId: string,
+  formData: ICreateShortUrlApiPayload,
+) {
+  try {
+    const payload: ICreateShortUrlApiPayload = {} as ICreateShortUrlApiPayload;
+    if (formData.fullUrl) {
+      payload.fullUrl = formData.fullUrl;
+    }
+
+    if (formData.isActive) {
+      payload.isActive = formData.isActive;
+    }
+
+    if (formData.shortUrl) {
+      payload.shortUrl = formData.shortUrl;
+    }
+
+    const response: any = await updateShortUrlsApi(shortUrlId, payload);
+    const data: ICreateShortUrlApi = await response.json();
+
+    if (data.status === IStatus.FAIL) {
+      throw new Error(data?.message);
+    }
+
+    return {
+      successMessage: data?.message,
+      data: data.data,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return { errorMessage: String(error?.message) };
+  }
+}
+
+export async function getShortUrlAction(shortUrlId: string) {
+  try {
+    const response: any = await getShortUrlApi(shortUrlId);
+    const data: ICreateShortUrlApi = await response.json();
 
     if (data.status === IStatus.FAIL) {
       throw new Error(data?.message);

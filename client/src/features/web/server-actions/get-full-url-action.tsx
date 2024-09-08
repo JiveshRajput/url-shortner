@@ -9,6 +9,7 @@ export async function getFullUrlAction(shortUrlId: string) {
   const response = await getFullUrlApi(shortUrlId);
   const data = await response.json();
   revalidateTag(CACHING_TAGS.URL_STATS);
+  revalidateTag(CACHING_TAGS.USER_ALL_URL);
   const isActive: boolean = data?.data?.isActive;
   const fullUrl: string = data?.data?.fullUrl;
 

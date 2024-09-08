@@ -10,7 +10,14 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { IShortUrl, IShortUrlTableHeader } from '@/features/common';
-import { AdvancedAllLinksTableRow } from './advanced-all-links-table-row';
+import dynamic from 'next/dynamic';
+
+const AdvancedAllLinksTableRow = dynamic(
+  () => import('./advanced-all-links-table-row').then((mod) => mod.AdvancedAllLinksTableRow),
+  {
+    ssr: false,
+  },
+);
 
 const ADVANCED_DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
   {

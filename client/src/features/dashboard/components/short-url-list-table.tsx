@@ -10,7 +10,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { IShortUrl, IShortUrlTableHeader } from '@/features/common';
-import { ShortUrlListTableRow } from './short-url-list-table-row';
+// import { ShortUrlListTableRow } from './short-url-list-table-row';
+import dynamic from 'next/dynamic';
+
+const ShortUrlListTableRow = dynamic(
+  () => import('./short-url-list-table-row').then((mod) => mod.ShortUrlListTableRow),
+  { ssr: false },
+);
 
 export const DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
   {

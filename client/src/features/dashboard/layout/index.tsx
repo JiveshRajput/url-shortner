@@ -4,12 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { signOutAction } from '@/features/auth/server-actions';
+import { IUser } from '@/features/common';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { DASHBOARD_NAVIGATION } from '../constants';
-import { IUser } from '@/features/common';
 
 export const DashboardLayout = ({
   children,
@@ -20,8 +20,9 @@ export const DashboardLayout = ({
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const path = usePathname();
+  const router = useRouter();
   const { name = '', email = '' } = data || {};
-  
+
   return (
     <main>
       <div className="relative flex h-[100dvh] bg-slate-50">
@@ -45,6 +46,7 @@ export const DashboardLayout = ({
                   href={link}
                   title={title}
                   className={`mb-2 flex items-center rounded-lg px-4 py-3 transition hover:bg-white hover:text-sky-600 ${link === path ? 'bg-white text-sky-600' : 'text-white'}`}
+                  prefetch
                 >
                   <div className="mr-2" title={title}>
                     <Icon className="text-2xl" />
@@ -78,14 +80,17 @@ export const DashboardLayout = ({
                   </Avatar>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-auto">
-                  <div className="mb-1 flex items-center gap-2">
-                    <div className="font-semibold">User : </div>
-                    <div>{name}</div>
+                  <div className="mb-3">
+                    <div className="text-lg font-semibold">{name}</div>
+                    <div className="mb text-sm">{email}</div>
                   </div>
-                  <div className="mb-4 flex items-center gap-2">
-                    <div className="font-semibold">Email : </div>
-                    <div>{email}</div>
-                  </div>
+                  <Button
+                    className="mb-2 w-full"
+                    variant="outline"
+                    onClick={() => router.replace('/dashboard/profile')}
+                  >
+                    Update Profile
+                  </Button>
                   <Button className="w-full" onClick={() => signOutAction()}>
                     Logout
                   </Button>
@@ -101,7 +106,7 @@ export const DashboardLayout = ({
             </div>
           </header>
           {/* main */}
-          <main className="h-[calc(100dvh-4rem)] p-4 overflow-auto">{children}</main>
+          <main className="h-[calc(100dvh-4rem)] overflow-auto p-4">{children}</main>
         </div>
       </div>
     </main>

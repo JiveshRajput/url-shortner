@@ -11,7 +11,7 @@ export const DashboardHomeScreen = async () => {
   return (
     <div>
       <h1 className="mb-6 text-3xl font-semibold max-md:mb-4 max-md:text-xl">
-        Welcome to your dashboard!
+        Welcome to your dashboard!📈📊
       </h1>
       <div className="mb-6 grid gap-4 max-md:mb-4 md:grid-cols-2 lg:grid-cols-4">
         {getDashboardCardDetails(result.data).map(({ description, title, value, Icon }) => (

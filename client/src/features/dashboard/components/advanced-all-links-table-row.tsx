@@ -26,9 +26,11 @@ import { MdOutlineContentCopy, MdOutlineFileDownload, MdQrCode2 } from 'react-ic
 import { QRCode } from 'react-qrcode-logo';
 import { toast } from 'sonner';
 import { deleteShortUrlAction } from '../server-actions';
+import { useRouter } from 'next/navigation';
 
 export const AdvancedAllLinksTableRow = ({ url }: { url: IShortUrl }) => {
   const qrCodeRef = useRef<QRCode>();
+  const router = useRouter();
   const [copiedText, setCopyText] = useCopyToClipboard();
 
   const { shortUrl = '', fullUrl = '', clicks = 0, createdAt = '', isActive = false } = url;
@@ -57,7 +59,7 @@ export const AdvancedAllLinksTableRow = ({ url }: { url: IShortUrl }) => {
     <TableRow>
       <TableCell>
         {shortUrl}
-        <Button variant="ghost">
+        <Button variant="ghost" size="icon">
           <MdOutlineContentCopy onClick={() => setCopyText(shortUrlFullLink)} />
         </Button>
       </TableCell>
@@ -106,7 +108,9 @@ export const AdvancedAllLinksTableRow = ({ url }: { url: IShortUrl }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>Update</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.replace(`/dashboard/update/${shortUrl}`)}>
+              Update
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDeleteShortUrl(shortUrl)}>
               Delete
             </DropdownMenuItem>

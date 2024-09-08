@@ -22,6 +22,17 @@ export const createShortUrlsApi = async (payload: ICreateShortUrlApiPayload) => 
   return fetch.post(API_ROUTE.SHORT_URL.CREATE_URL, payload);
 };
 
+export const updateShortUrlsApi = async (
+  shortUrlId: string,
+  payload: ICreateShortUrlApiPayload,
+) => {
+  return fetch.patch(`${API_ROUTE.SHORT_URL.UPDATE_URL}/${shortUrlId}`, payload);
+};
+
+export const getShortUrlApi = async (shortUrlId: string) => {
+  return fetch.get(`${API_ROUTE.SHORT_URL.GET_URL}/${shortUrlId}`);
+};
+
 export const deleteShortUrlApi = async (shortUrlId: string) => {
   return fetch.delete(`${API_ROUTE.SHORT_URL.DELETE_URL}/${shortUrlId}`);
 };

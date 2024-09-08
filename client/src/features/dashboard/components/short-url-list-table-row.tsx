@@ -32,7 +32,7 @@ export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
     <TableRow>
       <TableCell>
         {shortUrl}
-        <Button variant="ghost">
+        <Button variant="ghost" size="icon">
           <MdOutlineContentCopy onClick={() => setCopyText(shortUrlFullLink)} />
         </Button>
       </TableCell>
