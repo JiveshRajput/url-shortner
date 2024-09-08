@@ -28,6 +28,7 @@ export const API_ROUTE = {
   SHORT_URL: {
     URL: '/url',
     GET_URL: '/url',
+    GET_CLICK_URL: '/url/click',
     GET_ALL_URL: '/url/all',
     GET_URL_STATS: '/url/stats',
     UPDATE_URL: '/url',
