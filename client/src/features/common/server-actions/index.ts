@@ -11,6 +11,10 @@ export async function navigate(path: string, type: RedirectType = RedirectType.r
   return redirect(path, type);
 }
 
+export async function navigateToUpdateUrl(shortUrlId: string) {
+  return navigate(`/dashboard/update/${shortUrlId}`);
+}
+
 export async function getUserDetailsAction() {
   try {
     const userId = getCookies(COOKIES.USER_ID) as string;

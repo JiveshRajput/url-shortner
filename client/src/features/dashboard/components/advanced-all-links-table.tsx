@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table';
 import { IShortUrl, IShortUrlTableHeader } from '@/features/common';
 import dynamic from 'next/dynamic';
+import { DASHBOARD_URL_SHORTENER_TABLE_HEADER } from '../constants';
 
 const AdvancedAllLinksTableRow = dynamic(
   () => import('./advanced-all-links-table-row').then((mod) => mod.AdvancedAllLinksTableRow),
@@ -20,24 +21,7 @@ const AdvancedAllLinksTableRow = dynamic(
 );
 
 const ADVANCED_DASHBOARD_URL_SHORTENER_TABLE_HEADER: IShortUrlTableHeader[] = [
-  {
-    title: 'Short Link',
-  },
-  {
-    title: 'Original Link',
-  },
-  {
-    title: 'QR Code',
-  },
-  {
-    title: 'Clicks',
-  },
-  {
-    title: 'Status',
-  },
-  {
-    title: 'Created At',
-  },
+  ...DASHBOARD_URL_SHORTENER_TABLE_HEADER,
   {
     title: 'Actions',
   },

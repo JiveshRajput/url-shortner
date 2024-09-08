@@ -108,15 +108,11 @@ export async function updateShortUrlAction(
       payload.fullUrl = formData.fullUrl;
     }
 
-    if (formData.isActive) {
-      payload.isActive = formData.isActive;
-    }
-
     if (formData.shortUrl) {
       payload.shortUrl = formData.shortUrl;
     }
-
-    const response: any = await updateShortUrlsApi(shortUrlId, payload);
+    
+    const response: any = await updateShortUrlsApi(shortUrlId, formData);
     const data: ICreateShortUrlApi = await response.json();
 
     if (data.status === IStatus.FAIL) {
@@ -125,7 +121,7 @@ export async function updateShortUrlAction(
 
     return {
       successMessage: data?.message,
-      data: data.data,
+      data: { shortUrl: shortUrlId },
     };
   } catch (error: any) {
     console.error(error);

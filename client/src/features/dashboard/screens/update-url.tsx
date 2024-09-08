@@ -1,5 +1,6 @@
 'use server';
 
+import { notFound } from 'next/navigation';
 import { ICreateShortUrlApiPayload } from '../apis/types';
 import { ShortUrlForm } from '../components';
 import { getShortUrlAction, updateShortUrlAction } from '../server-actions';
@@ -8,6 +9,10 @@ import { IUpdateShortUrlIdScreen } from '../types';
 export const DashboardUpdateUrlScreen = async (props: IUpdateShortUrlIdScreen) => {
   const { shortUrlId } = props;
   const result = await getShortUrlAction(shortUrlId);
+
+  if (result.errorMessage) {
+    notFound();
+  }
 
   const initialFormData: ICreateShortUrlApiPayload = {
     fullUrl: result.data?.fullUrl || '',

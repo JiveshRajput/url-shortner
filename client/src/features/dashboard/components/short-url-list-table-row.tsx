@@ -14,12 +14,14 @@ import { EUrlStatus, IShortUrl, useCopyToClipboard, WEBSITE_URL } from '@/featur
 import { cn } from '@/lib/utils';
 import { formatDateAndTime } from '@/utils/formatters';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { MutableRefObject, useRef } from 'react';
 import { MdOutlineContentCopy, MdOutlineFileDownload, MdQrCode2 } from 'react-icons/md';
 import { QRCode } from 'react-qrcode-logo';
 
 export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
   const qrCodeRef = useRef<QRCode>();
+  const router = useRouter();
   const [copiedText, setCopyText] = useCopyToClipboard();
 
   const { shortUrl = '', fullUrl = '', clicks = 0, createdAt = '', isActive = false } = url;
@@ -29,7 +31,7 @@ export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
   const downloadShortUrlQrCode = () => qrCodeRef.current?.download('png', `${shortUrl}-short-link`);
 
   return (
-    <TableRow>
+    <TableRow onDoubleClick={() => router.replace(`/dashboard/url/${shortUrl}`)}>
       <TableCell>
         {shortUrl}
         <Button variant="ghost" size="icon">

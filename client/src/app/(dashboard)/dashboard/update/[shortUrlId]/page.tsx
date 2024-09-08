@@ -1,6 +1,4 @@
-import { IUpdateShortUrlIdPage } from '@/features/dashboard';
-import { DashboardUpdateUrlScreen } from '@/features/dashboard/screens/update-url';
-import { ShortUrlIdScreen } from '@/features/web';
+import { DashboardUpdateUrlScreen, IUpdateShortUrlIdPage } from '@/features/dashboard';
 
 const UpdateShortUrlPage = (props: IUpdateShortUrlIdPage) => {
   const {

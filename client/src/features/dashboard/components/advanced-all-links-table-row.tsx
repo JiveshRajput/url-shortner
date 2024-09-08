@@ -108,6 +108,9 @@ export const AdvancedAllLinksTableRow = ({ url }: { url: IShortUrl }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => router.replace(`/dashboard/url/${shortUrl}`)}>
+              Show Details
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.replace(`/dashboard/update/${shortUrl}`)}>
               Update
             </DropdownMenuItem>
