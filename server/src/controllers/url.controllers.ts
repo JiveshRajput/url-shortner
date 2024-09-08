@@ -88,7 +88,7 @@ export const updateUrlController: RequestHandler = async (
 ): Promise<void> => {
   try {
     const { uniqueId } = request.params;
-    const { fullUrl, shortUrl, clicks, userId } = request.body;
+    const { fullUrl, shortUrl, clicks, isActive, userId } = request.body;
 
     // checking if jwt userId and current userId is same or not
     const user = sameUserValidator(request, userId, next);
@@ -101,7 +101,7 @@ export const updateUrlController: RequestHandler = async (
       throw new Error(messages.urlNotExistsMessage);
     }
 
-    if (shortUrl) {
+    if (shortUrl && data.shortUrl !== shortUrl) {
       const isAlreadyExists = await UrlModel.findOne({ shortUrl });
       if (isAlreadyExists) {
         throw new Error(messages.urlAlreadyExistsMessage);
@@ -118,6 +118,10 @@ export const updateUrlController: RequestHandler = async (
 
     if (clicks) {
       data.clicks = clicks;
+    }
+
+    if (isActive) {
+      data.isActive = isActive;
     }
 
     await data.save();
