@@ -11,6 +11,7 @@ const {
   updateUrlController,
   deleteUrlController,
   getUrlStatsController,
+  getClickUrlController,
 } = urlControllers;
 
 urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
@@ -18,9 +19,11 @@ urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
 urlRoutes.route('/all/:userId').get(verifyTokenMiddleware, getAllUrlController);
 urlRoutes.route('/stats/:userId').get(verifyTokenMiddleware, getUrlStatsController);
 
+urlRoutes.route('/click/:uniqueId').get(getUrlController);
+
 urlRoutes
   .route('/:uniqueId')
-  .get(getUrlController)
+  .get(getClickUrlController)
   .patch(verifyTokenMiddleware, updateUrlController)
   .delete(verifyTokenMiddleware, deleteUrlController);
 

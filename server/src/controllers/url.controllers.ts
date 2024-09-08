@@ -17,6 +17,32 @@ export const getUrlController: RequestHandler = async (
       throw new Error(messages.noDataFoundMessage);
     }
 
+    // Sending success response
+    const responseMessage: IResponseSuccess = CreateResponse.success(
+      messages.urlFetchSuccessMessage,
+      {
+        data,
+      },
+    );
+    response.status(responseMessage.statusCode).json(responseMessage);
+  } catch (error: any) {
+    next(CreateError.clientError(error?.message || messages.urlFetchErrorMessage));
+  }
+};
+
+export const getClickUrlController: RequestHandler = async (
+  request: IRequest,
+  response: IResponse,
+  next: INextFunction,
+): Promise<void> => {
+  try {
+    const { uniqueId } = request.params;
+    const data = await UrlModel.findOne({ shortUrl: uniqueId });
+
+    if (!data) {
+      throw new Error(messages.noDataFoundMessage);
+    }
+
     data.clicks += 1;
     await data.save();
 
