@@ -120,7 +120,7 @@ export const updateUrlController: RequestHandler = async (
       data.clicks = clicks;
     }
 
-    if (isActive) {
+    if (isActive != undefined) {
       data.isActive = isActive;
     }
 
