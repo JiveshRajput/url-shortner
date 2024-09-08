@@ -19,11 +19,11 @@ urlRoutes.route('/').post(verifyTokenMiddleware, createUrlController);
 urlRoutes.route('/all/:userId').get(verifyTokenMiddleware, getAllUrlController);
 urlRoutes.route('/stats/:userId').get(verifyTokenMiddleware, getUrlStatsController);
 
-urlRoutes.route('/click/:uniqueId').get(getUrlController);
+urlRoutes.route('/click/:uniqueId').get(getClickUrlController);
 
 urlRoutes
   .route('/:uniqueId')
-  .get(getClickUrlController)
+  .get(getUrlController)
   .patch(verifyTokenMiddleware, updateUrlController)
   .delete(verifyTokenMiddleware, deleteUrlController);
 
