@@ -3,7 +3,12 @@
 import { notFound } from 'next/navigation';
 import { getShortUrlAction } from '../server-actions';
 import { IUpdateShortUrlIdScreen } from '../types';
-import { ShortUrlDetails } from '../components/short-url-details-component';
+// import { ShortUrlDetails } from '../components';
+import dynamic from 'next/dynamic';
+
+const ShortUrlDetails = dynamic(() => import('../components').then((m) => m.ShortUrlDetails), {
+  ssr: false,
+});
 
 export const DashboardShortUrlDetailsScreen = async (props: IUpdateShortUrlIdScreen) => {
   const { shortUrlId } = props;

@@ -31,7 +31,7 @@ export const ShortUrlListTableRow = ({ url }: { url: IShortUrl }) => {
   const downloadShortUrlQrCode = () => qrCodeRef.current?.download('png', `${shortUrl}-short-link`);
 
   return (
-    <TableRow onDoubleClick={() => router.replace(`/dashboard/url/${shortUrl}`)}>
+    <TableRow onDoubleClick={() => router.replace(`/dashboard/link/${shortUrl}`)}>
       <TableCell>
         {shortUrl}
         <Button variant="ghost" size="icon">

@@ -9,3 +9,9 @@ export function formatDateAndTime(date: string | Date) {
 
   return `${formattedDate} ${formattedTime}`;
 }
+
+export const avatarWordFormatter = (name: string = '') =>
+  name
+    .split(' ')
+    .map((word: string) => word[0]?.toUpperCase())
+    .join('');

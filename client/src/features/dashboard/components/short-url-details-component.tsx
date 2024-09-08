@@ -3,9 +3,16 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { EUrlStatus, IShortUrl, navigateToUpdateUrl } from '@/features/common';
+import {
+  EUrlStatus,
+  IShortUrl,
+  navigateToUpdateUrl,
+  useCopyToClipboard,
+  WEBSITE_URL,
+} from '@/features/common';
 import { cn } from '@/lib/utils';
 import { formatDateAndTime } from '@/utils/formatters';
+import { MdOutlineContentCopy } from 'react-icons/md';
 
 interface IShortUrlDetails {
   data: IShortUrl | undefined;
@@ -21,29 +28,9 @@ export const ShortUrlDetails = async (props: IShortUrlDetails) => {
     shortUrl = '',
     updatedAt = '',
   } = data as IShortUrl;
+  const [, setCopyText] = useCopyToClipboard();
 
-  // const UrlInfo = [
-  //   {
-  //     key: 'Short Link',
-  //     value: shortUrl,
-  //   },
-  //   {
-  //     key: 'Long Link',
-  //     value: fullUrl,
-  //   },
-  //   {
-  //     key: 'Status',
-  //     value: isActive,
-  //   },
-  //   {
-  //     key: 'Total Clicks',
-  //     value: clicks,
-  //   },
-  //   {
-  //     key: 'Created At',
-  //     value: createdAt,
-  //   },
-  // ];
+  const shortUrlFullLink: string = `${window.location.origin || WEBSITE_URL}/${shortUrl}`;
 
   return (
     <div>
@@ -52,7 +39,12 @@ export const ShortUrlDetails = async (props: IShortUrlDetails) => {
           <div className="mb-4 flex items-start gap-4 max-md:flex-col max-md:gap-1">
             <p className="flex-1 font-semibold max-md:text-sm">Short Link</p>
             <p className="max-md:hidden">:</p>
-            <p className="flex-1">{shortUrl}</p>
+            <p className="flex-1">
+              {shortUrl}
+              <Button variant="ghost" size="icon">
+                <MdOutlineContentCopy onClick={() => setCopyText(shortUrlFullLink)} />
+              </Button>
+            </p>
           </div>
           <div className="mb-4 flex items-start gap-4 max-md:flex-col max-md:gap-1">
             <p className="flex-1 font-semibold max-md:text-sm">Full Link</p>

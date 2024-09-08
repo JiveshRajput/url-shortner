@@ -42,7 +42,7 @@ export const ShortUrlForm = (props: IShortUrlForm) => {
 
     if (response?.successMessage) {
       toast.success(response.successMessage);
-      navigate(`/dashboard/url/${response.data?.shortUrl}`);
+      navigate(`/dashboard/link/${response.data?.shortUrl}`);
     }
   };
 
