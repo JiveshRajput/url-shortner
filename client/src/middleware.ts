@@ -8,7 +8,11 @@ export async function middleware(request: NextRequest, context: NextFetchEvent) 
   console.log('middleware starts');
   context.waitUntil(
     authenticateUserApi()
-      .then((response) => response.json())
+      .then((response) => {
+        const result = response.json();
+        console.log('middleware result:', result);
+        return result;
+      })
       .then((data) => {
         console.log('middleware authenticate user', data);
 
@@ -21,8 +25,8 @@ export async function middleware(request: NextRequest, context: NextFetchEvent) 
         }
       })
       .catch((error) => {
-        console.log('middleware error:',error);
-        console.log(JSON.stringify(error));
+        console.log('middleware error:', error);
+        console.log('middleware error:', JSON.stringify(error));
         const response = NextResponse.redirect(new URL('/sign-in', request.url));
         response.cookies.delete(COOKIES.ACCESS_TOKEN);
         response.cookies.delete(COOKIES.REFRESH_TOKEN);
