@@ -17,7 +17,9 @@ export async function navigateToUpdateUrl(shortUrlId: string) {
 
 export async function getUserDetailsAction() {
   try {
-    const userId = getCookies(COOKIES.USER_ID) as string;
+    const userId = getCookies(COOKIES.USER_ID);
+
+    console.log('getUserDetailsAction:', userId);
 
     if (!userId) {
       throw new Error('User id not available');
