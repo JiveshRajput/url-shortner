@@ -21,6 +21,8 @@ export async function middleware(request: NextRequest, context: NextFetchEvent) 
         }
       })
       .catch((error) => {
+        console.log(error);
+        console.log(JSON.stringify(error));
         const response = NextResponse.redirect(new URL('/sign-in', request.url));
         response.cookies.delete(COOKIES.ACCESS_TOKEN);
         response.cookies.delete(COOKIES.REFRESH_TOKEN);
