@@ -10,7 +10,6 @@ export async function middleware(request: NextRequest, context: NextFetchEvent) 
     authenticateUserApi()
       .then((response) => {
         const result = response.json();
-        console.log('middleware result:', result);
         return result;
       })
       .then((data) => {

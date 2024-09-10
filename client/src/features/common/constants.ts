@@ -22,6 +22,9 @@ export const API_ROUTE = {
     AUTHENTICATE: `/auth/authenticate`,
     GET_ACCESS_TOKEN: `/auth/get-access-token`,
   },
+  PROFILE: {
+    UPDATE: (userId: string) => `/auth/${userId}`,
+  },
   COMMON: {
     GET_USER_BY_ID: `/auth`,
   },

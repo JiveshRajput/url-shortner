@@ -1,7 +1,7 @@
 'use server';
 
 import { COOKIES } from '@/features/auth/constants';
-import { getCookies } from '@/utils';
+import { deleteCookies, getCookies } from '@/utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { getUserDetailsApi } from '../apis';
 import { IStatus } from '@/types';
@@ -9,6 +9,13 @@ import { IUserDetailsApi } from '../apis/types';
 
 export async function navigate(path: string, type: RedirectType = RedirectType.replace) {
   return redirect(path, type);
+}
+
+export async function navigateToSignIn() {
+  deleteCookies(COOKIES.ACCESS_TOKEN);
+  deleteCookies(COOKIES.REFRESH_TOKEN);
+  deleteCookies(COOKIES.USER_ID);
+  return navigate('/sign-in');
 }
 
 export async function navigateToUpdateUrl(shortUrlId: string) {

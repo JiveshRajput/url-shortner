@@ -1,3 +1,5 @@
+export * from './profile';
+
 import { API_ROUTE, CACHING_TAGS } from '@/features/common';
 import { fetch } from '@/lib/fetch';
 import { ICreateShortUrlApiPayload } from './types';

@@ -7,7 +7,7 @@ export const GlobalProviders = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <>{children}</>
-      <Toaster />
+      <Toaster richColors />
     </>
   );
 };

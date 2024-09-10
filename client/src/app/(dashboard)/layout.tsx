@@ -1,7 +1,6 @@
-import { getUserDetailsAction } from '@/features/common';
+import { getUserDetailsAction, navigateToSignIn } from '@/features/common';
 import { DashboardLayout } from '@/features/dashboard';
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
@@ -14,8 +13,8 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const result = await getUserDetailsAction();
 
   if (result.errorMessage && !result.data) {
-    console.log('inside redirect sign in dashboard')
-    redirect('/sign-in');
+    console.log('inside redirect sign in dashboard');
+    navigateToSignIn();
   }
 
   return <DashboardLayout data={result.data}>{children}</DashboardLayout>;

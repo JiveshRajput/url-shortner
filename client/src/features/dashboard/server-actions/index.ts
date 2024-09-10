@@ -111,7 +111,7 @@ export async function updateShortUrlAction(
     if (formData.shortUrl) {
       payload.shortUrl = formData.shortUrl;
     }
-    
+
     const response: any = await updateShortUrlsApi(shortUrlId, formData);
     const data: ICreateShortUrlApi = await response.json();
 
