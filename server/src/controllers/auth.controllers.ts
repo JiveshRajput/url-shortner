@@ -108,7 +108,7 @@ export const updateUserController: IRequestHandler = async (
     }
 
     // checking number already exists or not
-    if (!(number && number !== user.number)) {
+    if (!(number !== user.number)) {
       const numberExists = await UserModel.findOne({ number });
       if (numberExists) {
         throw new Error(messages.numberExistsMessage);
