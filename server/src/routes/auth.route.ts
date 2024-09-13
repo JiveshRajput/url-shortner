@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { authControllers } from '../controllers';
+import { authControllers, userControllers } from '../controllers';
 import { authMiddlewares } from '../middlewares';
+import { getMulterInstance } from '../helpers';
 
 const authRoutes = Router();
 const { verifyTokenMiddleware } = authMiddlewares;
@@ -18,6 +19,8 @@ const {
   resetPasswordByOtpController,
   sendOtpByEmailController,
 } = authControllers;
+const { uploadUserProfileImageController } = userControllers;
+const multerIntance = getMulterInstance();
 
 // Post: Register User API
 authRoutes.route('/register').post(registerUserController);
@@ -46,6 +49,11 @@ authRoutes
 
 // Post: Reset Password of User API
 authRoutes.route('/reset-password/:userId').post(verifyTokenMiddleware, resetPasswordController);
+
+// Post: Upload profile pic of User API
+authRoutes
+  .route('/:userId/upload-pic')
+  .post(multerIntance.single('image'), verifyTokenMiddleware, uploadUserProfileImageController);
 
 // Post: Reset Password of User via OTP API
 authRoutes.route('/reset-password-by-otp').post(resetPasswordByOtpController);

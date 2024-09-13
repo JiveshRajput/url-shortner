@@ -4,12 +4,14 @@
   "main": "src/app.js",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1691.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",
     "otp-generator": "^4.0.1",
     "shortid": "^2.2.16",
@@ -21,6 +23,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
     "@types/node": "^20.14.11",
     "@types/nodemailer": "^6.4.15",
     "@types/otp-generator": "^4.0.2",
@@ -32,9 +35,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
-  "engines": {
-    "npm": "please-use-yarn"
-  },
+  "engines": {},
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",

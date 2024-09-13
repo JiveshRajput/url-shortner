@@ -24,6 +24,8 @@ export const messages = {
   registerFailedMessage: 'User sign up failed!!!',
   userDetailsUpdateSuccessMessage: "User's details updated successfully!!!",
   userDetailsUpdateFailedMessage: "User's details updation failed!!!",
+  userProfilePicUpdateSuccessMessage: "User's profile pic updated successfully!!!",
+  userProfilePicUpdateFailedMessage: "User's profile pic updation failed!!!",
   getUserDetailsSuccessMessage: "User's details fetched successfully!!!",
   getUserDetailsFailedMessage: "User's details fetching failed!!!",
   missingCredentialsMessage: 'Credentials missing!!!',
@@ -50,6 +52,9 @@ export const messages = {
   tokenAuthenticatedFailedMessage: 'Token verification failed!!!',
   accessTokenCreatedSuccessMessage: 'Access token created successfully!!!',
   accessTokenCreatedFailedMessage: 'Access token creation failed!!!',
+
+  // Image upload messages
+  noImageUploadedMessage: 'No image uploaded!!!',
 
   // OTP messages
   otpSentSuccessMessage: 'OTP sent successfully!!!',
