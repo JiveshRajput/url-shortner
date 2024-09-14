@@ -60,6 +60,9 @@ exports.messages = {
     otpSentFailureMessage: 'OTP sent failed!!!',
     otpValidSuccessMessage: 'OTP validated successfully!!!',
     otpValidFailureMessage: 'OTP validation failed!!!',
+    // Submit Enquiry messages
+    enquiryFormSubmittedSuccessMessage: 'Your request has been submitted successfully!!! You will get a reply shortly from our executive.',
+    enquiryFormSubmittedErrorMessage: 'Something went wrong will submitting the form!!! Please try again later.',
     // Common messages
     alreadyVerifiedMessage: 'Already Verified!!!',
     accessDeniedMessage: 'Access Denied!!!',
