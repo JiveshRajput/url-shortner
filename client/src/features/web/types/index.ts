@@ -19,3 +19,10 @@ export interface IStep {
   bgColor: string;
   textColor: string;
 }
+
+export interface IEnquiryForm {
+  name: string;
+  number: number | string;
+  email: string;
+  message: string;
+}

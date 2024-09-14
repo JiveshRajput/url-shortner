@@ -1,7 +1,27 @@
+'use client';
+
 import { FilledButton } from '@/features/common';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { submitEnquiryFormAction } from '../server-actions/submit-inquiry-form-action';
 
 export const ContactUsSection = () => {
+  /**
+   * This method is used to submit contact us form.
+   * @param formData: Formdata includes email and password
+   */
+  const handleSubmitEnquiry = async (formData: FormData) => {
+    const response = await submitEnquiryFormAction(formData);
+
+    if (response?.errorMessage) {
+      toast.error(response.errorMessage);
+    }
+
+    if (response?.successMessage) {
+      toast.success(response.successMessage);
+    }
+  };
+
   return (
     <section
       id="contact-us"
@@ -27,12 +47,12 @@ export const ContactUsSection = () => {
             </div>
             <div className="mt-8 text-center">{/* IMAGE HERE */}</div>
           </div>
-          <div>
+          <form action={handleSubmitEnquiry}>
             <div className="mb-6">
               <input
                 className="w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
                 type="text"
-                name="fullname"
+                name="name"
                 placeholder="Full Name *"
                 required
               />
@@ -41,7 +61,7 @@ export const ContactUsSection = () => {
               <input
                 className="w-full rounded-lg border-2 border-gray-100 bg-gray-100 px-5 py-3 text-sm font-medium placeholder-gray-500 focus:border-gray-100 focus:bg-white focus:outline-none"
                 type="number"
-                name="phone"
+                name="number"
                 placeholder="Phone Number *"
                 required
               />
@@ -66,7 +86,7 @@ export const ContactUsSection = () => {
             <button className="w-full rounded-lg">
               <FilledButton>Send Message</FilledButton>
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </section>

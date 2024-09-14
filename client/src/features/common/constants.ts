@@ -28,6 +28,7 @@ export const API_ROUTE = {
   },
   COMMON: {
     GET_USER_BY_ID: `/auth`,
+    SUBMIT_INQUIRY_FORM: `/submit-inquiry`
   },
   SHORT_URL: {
     URL: '/url',
