@@ -24,6 +24,7 @@ export const API_ROUTE = {
   },
   PROFILE: {
     UPDATE: (userId: string) => `/auth/${userId}`,
+    UPDATE_PIC: (userId: string) => `/auth/${userId}/upload-pic`,
   },
   COMMON: {
     GET_USER_BY_ID: `/auth`,

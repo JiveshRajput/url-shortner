@@ -11,6 +11,8 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import { toast } from 'sonner';
 import { getUpdatedProfilePayload } from '../utils/generators';
+import { updateProfilePicAction } from '../server-actions/profile';
+import { checkProfilePicSize } from '../utils';
 
 interface IProfileDetails {
   userInitialDetails?: IUser;
@@ -38,7 +40,7 @@ export const ProfileDetails = (props: IProfileDetails) => {
     name: userInitialDetails.name,
     number: userInitialDetails.number as number,
   });
-  // console.log(form);
+
   /**
    * This method is used to submit form.
    * @param formData: Formdata includes short url fields
@@ -73,9 +75,43 @@ export const ProfileDetails = (props: IProfileDetails) => {
     }
   };
 
+  /**
+   * This method is used to update photo of user.
+   * @param event: Native event
+   */
+  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const image: File | undefined = event.target.files?.[0];
+
+    if (!image) {
+      toast.error('No image is uploaded');
+      return;
+    }
+
+    if (checkProfilePicSize(image)) {
+      toast.error('File should not be greater than 2mb');
+      return;
+    }
+
+    const form: FormData = new FormData();
+    form.append('image', event.target.files?.[0] as File);
+
+    const response = await updateProfilePicAction(form);
+
+    if (response?.errorMessage) {
+      toast.error(response.errorMessage);
+    }
+
+    if (response?.successMessage) {
+      toast.success(response.successMessage);
+      setForm((prevForm: IUserForm) => ({ ...prevForm, image: response.data?.location }));
+      navigate(`/dashboard/profile`);
+    }
+  };
+
   return (
     <Card>
       <CardContent className="pt-6">
+        {/* Profile pic */}
         <div className="mb-6 flex justify-center">
           <div className="relative">
             <Avatar className="size-28 cursor-pointer">
@@ -83,15 +119,26 @@ export const ProfileDetails = (props: IProfileDetails) => {
               <AvatarFallback className="text-5xl">{avatarWordFormatter(form.name)}</AvatarFallback>
             </Avatar>
             <div className="absolute bottom-0 right-0">
-              <div className="rounded-full bg-sky-500 p-2">
-                <Label htmlFor="image" tabIndex={0} role="button" className="rounded-full">
-                  <MdEdit className="text-white dark:text-gray-900" />
-                </Label>
-                <Input type="file" className="hidden" id="image" accept=".png, .jpg, .jpeg" />
-              </div>
+              <Label
+                htmlFor="image"
+                tabIndex={0}
+                role="button"
+                className="block rounded-full bg-sky-500 p-2"
+              >
+                <MdEdit className="text-white dark:text-gray-900" />
+              </Label>
+              <Input
+                type="file"
+                onChange={handleImageChange}
+                className="hidden"
+                id="image"
+                name="image"
+                accept=".png, .jpg, .jpeg"
+              />
             </div>
           </div>
         </div>
+        {/* Profile pic */}
         <form onSubmit={handleFormSubmit}>
           <div className="mb-4 flex gap-4 max-md:flex-col max-md:gap-1 md:items-center">
             <Label htmlFor="name" className="flex-1 text-base font-semibold max-md:text-sm">
