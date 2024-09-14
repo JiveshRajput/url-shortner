@@ -34,7 +34,7 @@ client/next-env.d.ts
 
 # Server 
 server/node_modules
-server/dist
+# server/dist
 server/access.log
 server/.env
 
