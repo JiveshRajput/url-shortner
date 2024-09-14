@@ -1,4 +1,6 @@
+import { IMAGES } from '@/assets';
 import { WEBSITE_NAME } from '@/features/common';
+import Image from 'next/image';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 
@@ -47,11 +49,7 @@ export const HeroSection = () => {
               <FaAngleRight />
             </Link>
             <div className="flex justify-center">
-              <img
-                src="https://pagedone.io/asset/uploads/1691054543.png"
-                alt="Dashboard image"
-                className="rounded-t-3xl"
-              />
+              <Image src={IMAGES.WEB.MOCKUP} alt="Dashboard image" className="rounded-t-3xl" />
             </div>
           </div>
         </section>

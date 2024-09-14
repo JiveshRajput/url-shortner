@@ -22,7 +22,7 @@ export const DashboardLayout = ({ children, data }: IDashboardLayout) => {
         {/* header */}
         <DashboardHeader data={data} setSidebarOpen={setSidebarOpen} />
         {/* main */}
-        <main className="h-[calc(100dvh-4rem)] overflow-auto p-4">{children}</main>
+        <main className="h-[calc(100dvh-4rem)] overflow-auto p-4 dashboard-content-scroll-bar">{children}</main>
       </div>
     </main>
   );

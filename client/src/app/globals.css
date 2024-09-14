@@ -89,6 +89,23 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+/* Dashboard content scrollbar  */
+.dashboard-content-scroll-bar::-webkit-scrollbar {
+  @apply w-3;
+}
+
+.dashboard-content-scroll-bar::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+.dashboard-content-scroll-bar::-webkit-scrollbar-thumb {
+  @apply rounded-sm bg-gray-400;
+}
+
+.dashboard-content-scroll-bar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
 /* Global Loader */
 
 .loader {

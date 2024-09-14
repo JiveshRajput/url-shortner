@@ -9,4 +9,7 @@ export const IMAGES = {
     WEB_NOT_FOUND: require('./svg/web-not-found.svg'),
     WEB_ANALYTICS_STATS: require('./svg/web-analytics-stats.svg'),
   },
+  WEB: {
+    MOCKUP: require('./images/web/mockup.png'),
+  },
 };
