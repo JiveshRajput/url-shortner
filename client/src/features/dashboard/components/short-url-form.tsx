@@ -84,7 +84,7 @@ export const ShortUrlForm = (props: IShortUrlForm) => {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="shortLink">Short Link Id</Label>
+              <Label htmlFor="shortLink">Customized Link Id</Label>
               <Input
                 id="shortLink"
                 name="shortUrl"

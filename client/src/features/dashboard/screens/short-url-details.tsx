@@ -21,7 +21,7 @@ export const DashboardShortUrlDetailsScreen = async (props: IUpdateShortUrlIdScr
   return (
     <div>
       <h1 className="mx-3 mb-6 text-3xl font-semibold max-md:mb-4 max-md:text-xl">
-        {result.data?.shortUrl} - Link Details
+        {result.data?.shortUrl} - Link Details 🎭
       </h1>
       <ShortUrlDetails data={result.data} />
     </div>

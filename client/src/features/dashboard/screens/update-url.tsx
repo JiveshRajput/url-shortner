@@ -28,7 +28,7 @@ export const DashboardUpdateUrlScreen = async (props: IUpdateShortUrlIdScreen) =
   return (
     <div>
       <h1 className="mx-3 mb-6 text-3xl font-semibold max-md:mb-4 max-md:text-xl">
-        Add New Link✌🏻
+        {result.data?.shortUrl} - Update Link🆕
       </h1>
       <ShortUrlForm serverAction={updateShortUrlExtendedAction} initialValue={initialFormData} />
     </div>
